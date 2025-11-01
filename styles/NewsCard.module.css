@@ -69,6 +69,7 @@
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -80,6 +81,7 @@
   line-height: 1.6;
   margin: 0 0 1rem 0;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
