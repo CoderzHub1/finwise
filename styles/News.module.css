@@ -9,81 +9,17 @@
   padding: 40px 20px;
 }
 
-.controls {
+.pageTitle {
+  text-align: center;
   margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
-.tabs {
-  display: flex;
-  gap: 10px;
-  background: #f5f5f5;
-  padding: 8px;
-  border-radius: 12px;
-}
-
-.tab {
-  flex: 1;
-  padding: 12px 24px;
-  border: 2px solid transparent;
-  background: transparent;
-  color: #525252;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 1rem;
-}
-
-.tab:hover {
-  background: #e5e5e5;
-}
-
-.activeTab {
-  background: #000000 !important;
-  color: #ffffff !important;
-  border-color: #000000;
-}
-
-.searchForm {
-  display: flex;
-  gap: 10px;
-  background: #ffffff;
-  padding: 0;
-  border-radius: 12px;
-}
-
-.searchInput {
-  flex: 1;
-  padding: 12px 20px;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: #000000;
-}
-
-.searchButton {
-  padding: 12px 32px;
-  border: none;
-  background: #000000;
-  color: white;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 1rem;
-}
-
-.searchButton:hover {
-  background: #262626;
-  transform: translateY(-2px);
+.pageTitle h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .resultsInfo {

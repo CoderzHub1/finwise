@@ -14,7 +14,6 @@ export default function News() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [totalResults, setTotalResults] = useState(0);
-  const [activeTab, setActiveTab] = useState('tips'); // 'tips' or 'headlines'
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -28,7 +27,7 @@ export default function News() {
       setHasMore(true);
       fetchFinanceNews(1);
     }
-  }, [user, activeTab]);
+  }, [user]);
 
   // Infinite scroll effect
   useEffect(() => {
@@ -47,7 +46,7 @@ export default function News() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [loadingMore, hasMore, error, page, activeTab]);
+  }, [loadingMore, hasMore, error, page]);
 
   const fetchFinanceNews = async (pageNum = 1, append = false) => {
     if (!append) {
@@ -58,27 +57,15 @@ export default function News() {
     setError('');
     
     try {
-      let response;
-      
-      if (activeTab === 'tips') {
-        const query = 'finance tips OR personal finance OR money management OR budgeting OR saving money';
-        response = await axios.get('http://localhost:5000/finance-news', {
-          params: {
-            query: query,
-            page_size: 20,
-            page: pageNum,
-            sort_by: 'publishedAt'
-          }
-        });
-      } else {
-        response = await axios.get('http://localhost:5000/finance-headlines', {
-          params: {
-            country: 'in',
-            page_size: 20,
-            page: pageNum
-          }
-        });
-      }
+      const query = 'finance tips OR personal finance OR money management OR budgeting OR saving money';
+      const response = await axios.get('http://localhost:5000/finance-news', {
+        params: {
+          query: query,
+          page_size: 20,
+          page: pageNum,
+          sort_by: 'publishedAt'
+        }
+      });
 
       if (response.data.status === 'ok') {
         const newArticles = response.data.articles;
@@ -119,14 +106,6 @@ export default function News() {
     router.push('/login');
   };
 
-  const navigateToDashboard = () => {
-    router.push('/dashboard');
-  };
-
-  const navigateToSuggestions = () => {
-    router.push('/suggestions');
-  };
-
   if (loading && articles.length === 0) {
     return (
       <div className={styles.container}>
@@ -149,21 +128,8 @@ export default function News() {
         <Navbar currentPage="/news" />
 
         <main className={styles.main}>
-          <div className={styles.controls}>
-            <div className={styles.tabs}>
-              <button
-                className={`${styles.tab} ${activeTab === 'tips' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('tips')}
-              >
-                Finance Tips & Guides
-              </button>
-              <button
-                className={`${styles.tab} ${activeTab === 'headlines' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('headlines')}
-              >
-                Top Headlines
-              </button>
-            </div>
+          <div className={styles.pageTitle}>
+            <h2>Finance Tips & Guides</h2>
           </div>
 
           {error && (
