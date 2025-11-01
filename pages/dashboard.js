@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [totalExpense, setTotalExpense] = useState(0);
   const [animationTrigger, setAnimationTrigger] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [transactionRefreshTrigger, setTransactionRefreshTrigger] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -65,11 +66,13 @@ export default function Dashboard() {
   const handleIncomeAdded = (amount) => {
     setTotalIncome(prev => prev + amount);
     setAnimationTrigger({ type: 'income', amount, timestamp: Date.now() });
+    setTransactionRefreshTrigger(prev => prev + 1);
   };
 
   const handleExpenseAdded = (amount) => {
     setTotalExpense(prev => prev + amount);
     setAnimationTrigger({ type: 'expense', amount, timestamp: Date.now() });
+    setTransactionRefreshTrigger(prev => prev + 1);
   };
 
   const handleLoanAdded = (type, amount) => {
@@ -78,6 +81,7 @@ export default function Dashboard() {
     } else {
       setTotalExpense(prev => prev + amount);
     }
+    setTransactionRefreshTrigger(prev => prev + 1);
     fetchUserData(); // Refresh data
   };
 
@@ -125,7 +129,7 @@ export default function Dashboard() {
           </section>
 
           <section className={styles.historySection}>
-            <TransactionHistory />
+            <TransactionHistory refreshTrigger={transactionRefreshTrigger} />
           </section>
         </main>
       </div>

@@ -132,3 +132,158 @@
 .switchAuth a:hover {
   color: #404040;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .formCard {
+    max-width: 420px;
+    padding: 36px;
+  }
+
+  .title {
+    font-size: 1.9rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+
+  .formCard {
+    max-width: 400px;
+    padding: 32px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .form {
+    gap: 18px;
+  }
+
+  .input {
+    padding: 11px 15px;
+    font-size: 0.95rem;
+  }
+
+  .submitBtn {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .formCard {
+    max-width: 100%;
+    padding: 28px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+  }
+
+  .form {
+    gap: 16px;
+  }
+
+  .formGroup label {
+    font-size: 0.85rem;
+  }
+
+  .input {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .submitBtn {
+    padding: 12px;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+
+  .error {
+    padding: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  .switchAuth {
+    margin-top: 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 5px;
+  }
+
+  .formCard {
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .title {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+
+  .form {
+    gap: 14px;
+  }
+
+  .formGroup {
+    gap: 6px;
+  }
+
+  .formGroup label {
+    font-size: 0.8rem;
+  }
+
+  .input {
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .submitBtn {
+    padding: 11px;
+    font-size: 0.85rem;
+    margin-top: 6px;
+    border-radius: 10px;
+  }
+
+  .error {
+    padding: 8px;
+    font-size: 0.8rem;
+    margin-bottom: 14px;
+    border-radius: 10px;
+  }
+
+  .switchAuth {
+    margin-top: 14px;
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,798 @@
+/* Community.module.css */
+
+.container {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.header {
+  border-bottom: 2px solid #000;
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 50;
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.searchContainer {
+  position: relative;
+  width: 400px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* User Menu Styles */
+.userMenuContainer {
+  position: relative;
+}
+
+.userMenuButton {
+  padding: 8px 12px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userMenuText {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.userMenuDropdown {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  width: 250px;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  box-shadow: 4px 4px 0 #000;
+  z-index: 100;
+}
+
+.userInfo {
+  padding: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.userName {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.userHandle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.userEmail {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.menuButton {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.signOutButton {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+/* Main Content Layout */
+.mainContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.sidebarCard {
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: #fff;
+}
+
+.sidebarCard h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.categoryButton {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: normal;
+  transition: all 0.2s ease;
+}
+
+.categoryButton:hover {
+  background-color: #f3f4f6;
+}
+
+.categoryButton.active {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #fbbf24;
+}
+
+.createPostButton {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.createPostButton:hover {
+  background-color: #333;
+}
+
+/* Main Content Area */
+.mainArea {
+  flex: 1;
+}
+
+/* Filter Bar */
+.filterBar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.filterLabel {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.filterButton {
+  padding: 8px 16px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  font-weight: normal;
+  text-transform: capitalize;
+  transition: all 0.2s ease;
+}
+
+.filterButton:hover {
+  background-color: #f3f4f6;
+}
+
+.filterButton.active {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Posts Feed */
+.postsFeed {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loadingCard,
+.errorCard,
+.emptyCard {
+  padding: 40px;
+  text-align: center;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.errorCard {
+  border-color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.errorText {
+  font-size: 16px;
+  font-weight: bold;
+  color: #dc2626;
+}
+
+.loadingText,
+.emptyText {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Post Card */
+.postCard {
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 24px;
+  background-color: #fff;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.postHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.postAuthorInfo {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background-color: #e0e7ff;
+}
+
+.authorDetails h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reputationBadge {
+  font-size: 12px;
+  padding: 2px 8px;
+  border: 1px solid #000;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.authorBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.authorBadge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #fef3c7;
+}
+
+.postMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.postTime {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.moreButton {
+  padding: 4px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.postTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.postContent {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Tags */
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  padding: 6px 12px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #dbeafe;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Post Actions */
+.postActions {
+  display: flex;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background-color: #f3f4f6;
+}
+
+.bookmarkButton {
+  margin-left: auto;
+}
+
+/* Comment Section */
+.commentSection {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.commentInputContainer {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.commentPlaceholder {
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Right Sidebar */
+.rightSidebar {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.challengeCard {
+  border: 2px solid #000;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fff;
+}
+
+.challengeItem {
+  padding: 16px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #dcfce7;
+}
+
+.challengeItem:last-child {
+  margin-bottom: 0;
+  background-color: #e0e7ff;
+}
+
+.challengeTitle {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.challengeDescription {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #22c55e;
+}
+
+.progressFill.blue {
+  background-color: #6366f1;
+}
+
+.participantsCount {
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 8px;
+  display: block;
+}
+
+/* Create Post Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: #fff;
+  border: 4px solid #000;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 8px 8px 0 #000;
+}
+
+.modalTitle {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.modalTextarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 16px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.modalButton {
+  padding: 12px 24px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.modalButton:hover {
+  background-color: #f3f4f6;
+}
+
+.modalButton.primary {
+  background-color: #000;
+  color: #fff;
+}
+
+.modalButton.primary:hover {
+  background-color: #333;
+}
+
+.modalButton.primary:hover {
+  background-color: #333;
+}
+
+/* Loading State */
+.loadingState {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loadingText {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .headerContent {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  .searchContainer {
+    width: 300px;
+  }
+
+  .mainContent {
+    max-width: 100%;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .sidebar {
+    width: 240px;
+  }
+
+  .rightSidebar {
+    width: 260px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .sidebar,
+  .rightSidebar {
+    width: 100%;
+    order: 2;
+  }
+
+  .mainArea {
+    order: 1;
+  }
+
+  .sidebarCard {
+    margin-bottom: 16px;
+  }
+
+  .createPostButton {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .headerLeft {
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .searchContainer {
+    width: 200px;
+  }
+
+  .headerRight {
+    gap: 12px;
+  }
+
+  .userMenuButton {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .mainContent {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .postCard {
+    padding: 16px;
+  }
+
+  .postHeader {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .postMeta {
+    align-self: flex-end;
+  }
+
+  .postActions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .actionButton {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .modalContent {
+    padding: 24px;
+    margin: 16px;
+  }
+
+  .modalTitle {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerLeft {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .searchContainer {
+    width: 100%;
+    order: 2;
+  }
+
+  .logo {
+    order: 1;
+  }
+
+  .filterBar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filterButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .postCard {
+    padding: 12px;
+    margin: 0 -4px;
+  }
+
+  .postTitle {
+    font-size: 18px;
+  }
+
+  .tagsContainer {
+    gap: 6px;
+  }
+
+  .tag {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .modalContent {
+    padding: 16px;
+    margin: 8px;
+  }
+
+  .modalButtons {
+    flex-direction: column;
+  }
+
+  .modalButton {
+    width: 100%;
+  }
+}

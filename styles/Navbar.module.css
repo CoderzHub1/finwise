@@ -90,6 +90,39 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .header {
+    padding: 18px 35px;
+  }
+
+  .headerTitle {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 18px 30px;
+  }
+
+  .headerTitle {
+    font-size: 1.65rem;
+  }
+
+  .headerActions {
+    gap: 16px;
+  }
+
+  .navBtn {
+    padding: 9px 18px;
+    font-size: 0.9rem;
+  }
+
+  .signoutBtn {
+    padding: 9px 20px;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 15px 20px;
@@ -125,5 +158,45 @@
   .signoutBtn {
     width: 100%;
     padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 12px 15px;
+    gap: 12px;
+  }
+
+  .headerContent {
+    text-align: center;
+    width: 100%;
+  }
+
+  .headerTitle {
+    font-size: 1.3rem;
+  }
+
+  .headerSubtitle {
+    font-size: 0.8rem;
+  }
+
+  .headerActions {
+    gap: 10px;
+  }
+
+  .nav {
+    gap: 6px;
+  }
+
+  .navBtn {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+
+  .signoutBtn {
+    padding: 10px;
+    font-size: 0.85rem;
+    border-radius: 10px;
   }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import styles from '@/styles/TransactionHistory.module.css';
 
-export default function TransactionHistory() {
+export default function TransactionHistory({ refreshTrigger }) {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +15,24 @@ export default function TransactionHistory() {
     }
   }, [user]);
 
+  // Refresh when refreshTrigger changes (when transactions are added)
+  useEffect(() => {
+    if (refreshTrigger && user) {
+      fetchTransactions();
+    }
+  }, [refreshTrigger, user]);
+
+  // Auto-refresh every 1 minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (user) {
+        fetchTransactions();
+      }
+    }, 60000); // 60 seconds = 1 minute
+
+    return () => clearInterval(interval);
+  }, [user]);
+
   const fetchTransactions = async () => {
     try {
       const response = await axios.post('http://localhost:5000/get-user-data', {
@@ -23,10 +41,25 @@ export default function TransactionHistory() {
       });
 
       if (Array.isArray(response.data)) {
-        // Sort by date (most recent first)
-        const sorted = response.data.sort((a, b) => 
-          new Date(b.dateEntered) - new Date(a.dateEntered)
-        );
+        // Sort by creation time and then reverse the array
+        const sorted = response.data.sort((a, b) => {
+          const getTimestamp = (transaction) => {
+            if (transaction._id && transaction._id.$oid) {
+              return parseInt(transaction._id.$oid.substring(0, 8), 16);
+            }
+            if (transaction.dateEntered) {
+              const parts = transaction.dateEntered.split('-');
+              if (parts.length === 3) {
+                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).getTime() / 1000;
+              }
+            }
+            return Date.now() / 1000;
+          };
+
+          const timeA = getTimestamp(a);
+          const timeB = getTimestamp(b);
+          return timeA - timeB; // Sort oldest first
+        }).reverse(); // Then reverse to get newest first
         setTransactions(sorted);
       }
     } catch (error) {
