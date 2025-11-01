@@ -10,6 +10,8 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #e5e5e5;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .headerContent {
@@ -30,6 +32,47 @@
   color: #525252;
   margin: 0;
   font-size: 0.95rem;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.navBtn {
+  padding: 10px 20px;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.navBtn:hover {
+  background: #f5f5f5;
+  border-color: #d4d4d4;
+  transform: translateY(-2px);
+}
+
+.navBtnActive {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.navBtnActive:hover {
+  background: #262626;
+  border-color: #262626;
 }
 
 .signoutBtn {
@@ -118,13 +161,26 @@
 
 @media (max-width: 768px) {
   .header {
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
+    padding: 15px 20px;
   }
 
   .headerTitle {
     font-size: 1.5rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav {
+    flex: 1;
+  }
+
+  .navBtn {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 
   .main {

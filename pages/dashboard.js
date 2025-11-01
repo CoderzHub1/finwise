@@ -109,9 +109,19 @@ export default function Dashboard() {
             <h1 className={styles.headerTitle}>Financial Homie</h1>
             <p className={styles.headerSubtitle}>Welcome back, {user?.name || user?.username}!</p>
           </div>
-          <button onClick={handleSignout} className={styles.signoutBtn}>
-            Sign Out
-          </button>
+          <div className={styles.headerActions}>
+            <nav className={styles.nav}>
+              <button onClick={() => router.push('/dashboard')} className={`${styles.navBtn} ${styles.navBtnActive}`}>
+                Dashboard
+              </button>
+              <button onClick={() => router.push('/suggestions')} className={styles.navBtn}>
+                AI Suggestions
+              </button>
+            </nav>
+            <button onClick={handleSignout} className={styles.signoutBtn}>
+              Sign Out
+            </button>
+          </div>
         </header>
 
         <main className={styles.main}>

@@ -42,3 +42,32 @@ a {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+@keyframes eatBall {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-150px, 100px) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-150px, 100px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes explodeParticle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(cos(var(--angle)) * 50px * var(--speed)),
+      calc(sin(var(--angle)) * 50px * var(--speed))
+    ) scale(0);
+    opacity: 0;
+  }
+}
