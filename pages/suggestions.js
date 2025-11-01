@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
 import Head from 'next/head';
+import Navbar from '@/components/Navbar';
 import axios from 'axios';
 import styles from '@/styles/Suggestions.module.css';
 
@@ -72,25 +73,7 @@ export default function Suggestions() {
       </Head>
 
       <div className={styles.container}>
-        <header className={styles.header}>
-          <div className={styles.headerContent}>
-            <h1 className={styles.headerTitle}>Financial Homie</h1>
-            <p className={styles.headerSubtitle}>AI-Powered Financial Insights</p>
-          </div>
-          <div className={styles.headerActions}>
-            <nav className={styles.nav}>
-              <button onClick={navigateToDashboard} className={styles.navBtn}>
-                Dashboard
-              </button>
-              <button onClick={() => router.push('/suggestions')} className={`${styles.navBtn} ${styles.navBtnActive}`}>
-                AI Suggestions
-              </button>
-            </nav>
-            <button onClick={handleSignout} className={styles.signoutBtn}>
-              Sign Out
-            </button>
-          </div>
-        </header>
+        <Navbar currentPage="/suggestions" />
 
         <main className={styles.main}>
           {error ? (

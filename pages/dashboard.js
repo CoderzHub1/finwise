@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
 import Head from 'next/head';
+import Navbar from '@/components/Navbar';
 import GamifiedPieChart from '@/components/GamifiedPieChart';
 import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
@@ -104,25 +105,7 @@ export default function Dashboard() {
       </Head>
 
       <div className={styles.container}>
-        <header className={styles.header}>
-          <div className={styles.headerContent}>
-            <h1 className={styles.headerTitle}>Financial Homie</h1>
-            <p className={styles.headerSubtitle}>Welcome back, {user?.name || user?.username}!</p>
-          </div>
-          <div className={styles.headerActions}>
-            <nav className={styles.nav}>
-              <button onClick={() => router.push('/dashboard')} className={`${styles.navBtn} ${styles.navBtnActive}`}>
-                Dashboard
-              </button>
-              <button onClick={() => router.push('/suggestions')} className={styles.navBtn}>
-                AI Suggestions
-              </button>
-            </nav>
-            <button onClick={handleSignout} className={styles.signoutBtn}>
-              Sign Out
-            </button>
-          </div>
-        </header>
+        <Navbar currentPage="/dashboard" />
 
         <main className={styles.main}>
           <section className={styles.chartSection}>
