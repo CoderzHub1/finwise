@@ -325,4 +325,12 @@
   .loadingContainer p {
     font-size: 0.9rem;
   }
+
+  .analyticsSection {
+    margin-top: 20px;
+  }
+}
+
+.analyticsSection {
+  margin-top: 30px;
 }

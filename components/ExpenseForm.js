@@ -1,19 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import styles from '@/styles/Forms.module.css';
-
-const EXPENSE_CATEGORIES = [
-  'Food & Dining',
-  'Transportation',
-  'Shopping',
-  'Entertainment',
-  'Bills & Utilities',
-  'Healthcare',
-  'Education',
-  'Travel',
-  'Other'
-];
 
 export default function ExpenseForm({ onExpenseAdded }) {
   const { user } = useAuth();
@@ -23,6 +11,41 @@ export default function ExpenseForm({ onExpenseAdded }) {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserCategories();
+    }
+  }, [user]);
+
+  const fetchUserCategories = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/get-user-limits', {
+        username: user.username,
+        password: user.password
+      });
+
+      if (response.data.limits) {
+        const categoryNames = Object.keys(response.data.limits);
+        setCategories(categoryNames);
+      }
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      // Set default categories as fallback
+      setCategories([
+        'Food & Dining',
+        'Transportation',
+        'Shopping',
+        'Entertainment',
+        'Bills & Utilities',
+        'Healthcare',
+        'Education',
+        'Travel',
+        'Other'
+      ]);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,7 +130,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
             className={styles.select}
           >
             <option value="">Select a category</option>
-            {EXPENSE_CATEGORIES.map(cat => (
+            {categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>

@@ -8,6 +8,7 @@ import IncomeForm from '@/components/IncomeForm';
 import ExpenseForm from '@/components/ExpenseForm';
 import LoanForm from '@/components/LoanForm';
 import TransactionHistory from '@/components/TransactionHistory';
+import RewardsWidget from '@/components/RewardsWidget';
 import axios from 'axios';
 import styles from '@/styles/Dashboard.module.css';
 
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const [animationTrigger, setAnimationTrigger] = useState(null);
   const [loading, setLoading] = useState(true);
   const [transactionRefreshTrigger, setTransactionRefreshTrigger] = useState(0);
+  const [rewardsRefreshTrigger, setRewardsRefreshTrigger] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -67,12 +69,14 @@ export default function Dashboard() {
     setTotalIncome(prev => prev + amount);
     setAnimationTrigger({ type: 'income', amount, timestamp: Date.now() });
     setTransactionRefreshTrigger(prev => prev + 1);
+    setRewardsRefreshTrigger(prev => prev + 1); // Refresh rewards widget
   };
 
   const handleExpenseAdded = (amount) => {
     setTotalExpense(prev => prev + amount);
     setAnimationTrigger({ type: 'expense', amount, timestamp: Date.now() });
     setTransactionRefreshTrigger(prev => prev + 1);
+    setRewardsRefreshTrigger(prev => prev + 1); // Refresh rewards widget
   };
 
   const handleLoanAdded = (type, amount) => {
@@ -82,6 +86,7 @@ export default function Dashboard() {
       setTotalExpense(prev => prev + amount);
     }
     setTransactionRefreshTrigger(prev => prev + 1);
+    setRewardsRefreshTrigger(prev => prev + 1); // Refresh rewards widget
     fetchUserData(); // Refresh data
   };
 
@@ -112,6 +117,8 @@ export default function Dashboard() {
         <Navbar currentPage="/dashboard" />
 
         <main className={styles.main}>
+          <RewardsWidget refreshTrigger={rewardsRefreshTrigger} />
+          
           <section className={styles.chartSection}>
             <GamifiedPieChart 
               totalIncome={totalIncome}

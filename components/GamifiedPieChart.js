@@ -93,12 +93,10 @@ export default function PacManBudgetTracker({ totalIncome = 0, totalExpense = 0,
       );
       ctx.closePath();
 
-      const gradient = ctx.createRadialGradient(centerX - radius/3, centerY - radius/3, 0, centerX, centerY, radius);
-      gradient.addColorStop(0, '#FFD700');
-      gradient.addColorStop(1, '#FFA500');
-      ctx.fillStyle = gradient;
+      // White theme colors - white Pac-Man with black outline
+      ctx.fillStyle = '#ffffff';
       ctx.fill();
-      ctx.strokeStyle = '#FF8C00';
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 3;
       ctx.stroke();
 
@@ -115,9 +113,9 @@ export default function PacManBudgetTracker({ totalIncome = 0, totalExpense = 0,
           false
         );
         ctx.closePath();
-        ctx.fillStyle = '#f0f0f0';
+        ctx.fillStyle = '#f5f5f5';
         ctx.fill();
-        ctx.strokeStyle = '#d0d0d0';
+        ctx.strokeStyle = '#e5e5e5';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -128,7 +126,7 @@ export default function PacManBudgetTracker({ totalIncome = 0, totalExpense = 0,
           centerX + radius * Math.cos(mouthAngle + filledAngle),
           centerY + radius * Math.sin(mouthAngle + filledAngle)
         );
-        ctx.strokeStyle = '#FF8C00';
+        ctx.strokeStyle = '#000000';
         ctx.lineWidth = 3;
         ctx.stroke();
 
@@ -146,7 +144,7 @@ export default function PacManBudgetTracker({ totalIncome = 0, totalExpense = 0,
       const eyeY = centerY + radius * 0.3 * Math.sin(Math.PI / 4);
       ctx.beginPath();
       ctx.arc(eyeX, eyeY, radius * 0.08, 0, 2 * Math.PI);
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = '#525252';
       ctx.fill();
 
       // Only update mouth animation when eating

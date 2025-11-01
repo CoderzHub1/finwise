@@ -13,8 +13,12 @@ export default function Navbar({ currentPage = '' }) {
 
   const navItems = [
     { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Analytics', path: '/analytics' },
+    { label: 'Rewards', path: '/rewards' },
     { label: 'AI Suggestions', path: '/suggestions' },
-    { label: 'Finance News', path: '/news' }
+    { label: 'Finance News', path: '/news' },
+    { label: 'FinanceHub', path: '/community' },
+    { label: 'My Account', path: '/myAccount' },
   ];
 
   return (
