@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/router';
-import styles from '../styles/SplitExpenses.module.css';
-import Navbar from '../components/Navbar';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
+import Head from 'next/head';
+import styles from '@/styles/SplitExpenses.module.css';
+import Navbar from '@/components/Navbar';
 
 export default function SplitExpenses() {
   const { user } = useAuth();
   const router = useRouter();
+  const content = useTranslatedContent({
+    title: 'Split Expenses - FinWise',
+    loading: 'Loading your expenses...',
+    friends: 'Friends',
+    splitExpenses: 'Split Expenses',
+    addFriend: 'Add Friend',
+    sendRequest: 'Send Request',
+    createExpense: 'Create Split Expense',
+    balanceSummary: 'Balance Summary'
+  });
   const [activeTab, setActiveTab] = useState('friends'); // 'friends' or 'expenses'
+  const [loading, setLoading] = useState(true);
   
   // Friends state
   const [friends, setFriends] = useState([]);
@@ -52,6 +65,8 @@ export default function SplitExpenses() {
       }
     } catch (error) {
       console.error('Error fetching friends:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -260,26 +275,47 @@ export default function SplitExpenses() {
 
   if (!user) return null;
 
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loader}></div>
+        <p>{content.loading}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className={styles.container}>
-      <Navbar />
-      <div className={styles.content}>
-        <h1 className={styles.title}>💰 Expense Splitter</h1>
-        
-        <div className={styles.tabs}>
-          <button
-            className={`${styles.tab} ${activeTab === 'friends' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('friends')}
-          >
-            👥 Friends
-          </button>
-          <button
-            className={`${styles.tab} ${activeTab === 'expenses' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('expenses')}
-          >
-            💸 Split Expenses
-          </button>
-        </div>
+    <>
+      <Head>
+        <title>{content.title}</title>
+        <meta name="description" content="Split expenses with friends - FinWise" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <div className={styles.container}>
+        <Navbar currentPage="/split-expenses" />
+
+        <main className={styles.main}>
+          <div className={styles.content}>
+            <header className={styles.header}>
+              <h1 className={styles.title}>💰 {content.splitExpenses}</h1>
+            </header>
+            
+            <div className={styles.tabs}>
+              <button
+                className={`${styles.tab} ${activeTab === 'friends' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('friends')}
+              >
+                👥 {content.friends}
+              </button>
+              <button
+                className={`${styles.tab} ${activeTab === 'expenses' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('expenses')}
+              >
+                💸 {content.splitExpenses}
+              </button>
+            </div>
 
         {/* Friends Tab */}
         {activeTab === 'friends' && (
@@ -376,14 +412,14 @@ export default function SplitExpenses() {
 
         {/* Expenses Tab */}
         {activeTab === 'expenses' && (
-          <div className={styles.tabContent}>
-            {expenseMessage && (
-              <div className={styles.message}>{expenseMessage}</div>
-            )}
+              <div className={styles.tabContent}>
+                {expenseMessage && (
+                  <div className={styles.message}>{expenseMessage}</div>
+                )}
 
-            {/* Balance Summary */}
-            <div className={styles.balanceCard}>
-              <h2>💰 Balance Summary</h2>
+                {/* Balance Summary */}
+                <div className={styles.balanceCard}>
+                  <h2>💰 {content.balanceSummary}</h2>
               <div className={styles.balanceGrid}>
                 <div className={styles.balanceSection}>
                   <h3 className={styles.owedTitle}>You Owe</h3>
@@ -541,7 +577,9 @@ export default function SplitExpenses() {
             </div>
           </div>
         )}
+          </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 }
