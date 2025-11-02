@@ -1,7 +1,8 @@
 from google import genai
 from pydantic import BaseModel
 from datetime import datetime, timedelta
-
+import os
+from dotenv import load_dotenv
 finance_topics = [
         "Corporate finance and capital structure",
         "Investment analysis and portfolio management",
@@ -34,8 +35,8 @@ finance_topics = [
         "Dividend policy and payout strategies",
         "Green bonds and impact investing"
     ]
-
-api_key = "AIzaSyClEm8RcB3p1wi3ExLwx6i_FJWw1guI8v8"
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
 
 client = genai.Client(api_key=api_key)
 
