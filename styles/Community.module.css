@@ -391,9 +391,161 @@
   margin-top: 0;
 }
 
+/* Markdown content styles */
+.postTitle h1,
+.postTitle h2,
+.postTitle h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.postTitle p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .postContent {
   margin-bottom: 16px;
   line-height: 1.6;
+}
+
+/* Markdown content styles for post content */
+.postContent h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.postContent h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.postContent h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.postContent h4,
+.postContent h5,
+.postContent h6 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.postContent p {
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.postContent a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.postContent a:hover {
+  color: #1d4ed8;
+}
+
+.postContent ul,
+.postContent ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.postContent li {
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.postContent blockquote {
+  border-left: 4px solid #000;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: #4b5563;
+  font-style: italic;
+  background-color: #f9fafb;
+  padding: 12px 16px;
+}
+
+.postContent code {
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.postContent pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 2px solid #000;
+}
+
+.postContent pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: #f9fafb;
+}
+
+.postContent strong {
+  font-weight: bold;
+}
+
+.postContent em {
+  font-style: italic;
+}
+
+.postContent hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 20px 0;
+}
+
+.postContent img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px 0;
+  border: 2px solid #000;
+}
+
+.postContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  border: 2px solid #000;
+}
+
+.postContent th,
+.postContent td {
+  border: 2px solid #000;
+  padding: 12px;
+  text-align: left;
+}
+
+.postContent th {
+  background-color: #f3f4f6;
+  font-weight: bold;
 }
 
 /* Tags */
@@ -562,6 +714,17 @@
   margin: 0 0 24px 0;
   font-size: 24px;
   font-weight: bold;
+}
+
+.markdownInfo {
+  margin: -12px 0 16px 0;
+  padding: 12px;
+  background-color: #dbeafe;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1e40af;
+  font-weight: 500;
 }
 
 .modalTextarea {

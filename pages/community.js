@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, User, TrendingUp, BookOpen, PiggyBank, Target, Award, Filter, MessageSquare, ThumbsUp, Share2, Bookmark, MoreVertical, Plus, Home, Users, Trophy, Settings, ChevronDown, Tag, Send } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { marked } from 'marked';
 import styles from '../styles/Community.module.css';
 
 const FinanceCommunityPlatform = () => {
@@ -19,6 +20,25 @@ const FinanceCommunityPlatform = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
+
+  // Configure marked options for better security and formatting
+  marked.setOptions({
+    breaks: true, // Convert \n to <br>
+    gfm: true, // GitHub Flavored Markdown
+    headerIds: false, // Don't add IDs to headers
+    mangle: false, // Don't escape autolinked email addresses
+  });
+
+  // Function to convert markdown to HTML safely
+  const convertMarkdownToHtml = (markdownText) => {
+    if (!markdownText) return '';
+    try {
+      return marked.parse(markdownText);
+    } catch (error) {
+      console.error('Error parsing markdown:', error);
+      return markdownText; // Return original text if parsing fails
+    }
+  };
 
   // Fetch posts from backend
   useEffect(() => {
@@ -418,8 +438,14 @@ const FinanceCommunityPlatform = () => {
                 </div>
 
                 {/* Post Content */}
-                <h2 className={styles.postTitle}>{post.title}</h2>
-                <p className={styles.postContent}>{post.content}</p>
+                <div 
+                  className={styles.postTitle}
+                  dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(post.title) }}
+                />
+                <div 
+                  className={styles.postContent}
+                  dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(post.content) }}
+                />
 
                 {/* Tags */}
                 <div className={styles.tagsContainer}>
@@ -514,6 +540,9 @@ const FinanceCommunityPlatform = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h2 className={styles.modalTitle}>Create New Post</h2>
+            <p className={styles.markdownInfo}>
+              ✨ Markdown supported! Use **bold**, *italic*, [links](url), # headings, and more.
+            </p>
             <textarea
               value={newPostContent}
               onChange={(e) => setNewPostContent(e.target.value)}
