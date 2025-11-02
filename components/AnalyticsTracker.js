@@ -344,14 +344,14 @@ export default function AnalyticsTracker() {
                         : 'linear-gradient(90deg, #10b981, #059669)'
                     }}
                   />
-                  {usedPercent > 100 && (
-                    <div 
-                      className={styles.overageBar}
-                      style={{ 
-                        width: `${Math.min(usedPercent - 100, 100)}%`
-                      }}
-                    />
-                  )}
+                  {/* {usedPercent > 100 && (
+                    // <div 
+                    //   className={styles.overageBar}
+                    //   style={{ 
+                    //     width: `${Math.min(usedPercent - 100, 100)}%`
+                    //   }}
+                    // />
+                  )} */}
                 </div>
                 <div className={styles.limitPercentage}>
                   <span className={isBreached ? styles.breachedText : isWarning ? styles.warningText : ''}>

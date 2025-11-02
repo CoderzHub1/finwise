@@ -50,7 +50,7 @@ export default function GameRules() {
                       <div className={styles.rulePoints}>+10 points</div>
                     </div>
                     <p>
-                      Earn <strong>10 points</strong> for each of your <strong>first 20 transactions</strong>:
+                      Earn <strong>10 points</strong> for each of your <strong>first 5 transactions</strong>:
                     </p>
                     <ul>
                       <li>An income entry (salary, freelance, etc.)</li>
@@ -59,13 +59,42 @@ export default function GameRules() {
                       <li>A loan repayment</li>
                     </ul>
                     <div className={styles.ruleTip}>
-                      💡 <strong>Important:</strong> Only the first 20 transactions earn points to encourage early adoption!
+                      💡 <strong>Important:</strong> Only the first 5 transactions earn points to encourage early adoption!
+                    </div>
+                    <div className={styles.ruleWarning}>
+                      ⚠️ <strong>Warning:</strong> If you add an expense that exceeds your category limit, you'll lose 30 points! This penalty applies to all transactions, not just the first 5.
                     </div>
                   </div>
                 </div>
 
                 <div className={styles.ruleCard}>
                   <div className={styles.ruleNumber}>2</div>
+                  <div className={styles.ruleContent}>
+                    <div className={styles.ruleHeader}>
+                      <div className={styles.ruleIcon}>❌</div>
+                      <h3>Expense Limit Penalty</h3>
+                      <div className={styles.rulePoints}>-30 points</div>
+                    </div>
+                    <p>
+                      Whenever you add an expense that causes you to exceed your category spending limit, you'll receive a <strong>-30 point penalty</strong>. This applies to all transactions, not just the first 5!
+                    </p>
+                    <div className={styles.exampleBox}>
+                      <div className={styles.exampleTitle}>Example:</div>
+                      <ul>
+                        <li>Your "Food & Dining" limit is 10% of income</li>
+                        <li>Your monthly income is $1,000</li>
+                        <li>Your Food & Dining limit is $100</li>
+                        <li>If your expense pushes you over $100, you get -30 points</li>
+                      </ul>
+                    </div>
+                    <div className={styles.ruleTip}>
+                      💡 <strong>Strategy:</strong> Track your income first, then monitor your spending to stay within limits! The penalty is always active.
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.ruleCard}>
+                  <div className={styles.ruleNumber}>3</div>
                   <div className={styles.ruleContent}>
                     <div className={styles.ruleHeader}>
                       <div className={styles.ruleIcon}>✅</div>
@@ -76,17 +105,17 @@ export default function GameRules() {
                       Pay your loans on time and earn <strong>up to 60 points</strong>:
                     </p>
                     <ul>
-                      <li>10 points for recording the repayment (first 20 transactions only)</li>
+                      <li>10 points for recording the repayment (first 5 transactions only)</li>
                       <li>50 bonus points for paying on time (always awarded!)</li>
                     </ul>
                     <div className={styles.ruleTip}>
-                      💡 <strong>Tip:</strong> The 50-point bonus is always available, even after 20 transactions!
+                      💡 <strong>Tip:</strong> The 50-point bonus is always available, even after 5 transactions!
                     </div>
                   </div>
                 </div>
 
                 <div className={styles.ruleCard}>
-                  <div className={styles.ruleNumber}>3</div>
+                  <div className={styles.ruleNumber}>4</div>
                   <div className={styles.ruleContent}>
                     <div className={styles.ruleHeader}>
                       <div className={styles.ruleIcon}>🔥</div>
@@ -113,7 +142,7 @@ export default function GameRules() {
                 </div>
 
                 <div className={styles.ruleCard}>
-                  <div className={styles.ruleNumber}>4</div>
+                  <div className={styles.ruleNumber}>5</div>
                   <div className={styles.ruleContent}>
                     <div className={styles.ruleHeader}>
                       <div className={styles.ruleIcon}>🏅</div>

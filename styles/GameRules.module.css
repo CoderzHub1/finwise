@@ -223,6 +223,22 @@
   color: #000000;
 }
 
+.ruleWarning {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #991b1b;
+  border-left: 4px solid #ef4444;
+}
+
+.ruleWarning strong {
+  color: #991b1b;
+  font-weight: 700;
+}
+
 .weekExample {
   background: #f5f5f5;
   border: 2px solid #e5e5e5;

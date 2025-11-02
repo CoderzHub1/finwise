@@ -98,18 +98,18 @@ export default function Rewards() {
                       <div className={styles.pointsValue}>{rewardsData.reward_points}</div>
                       {rewardsData.transaction_count !== undefined && (
                         <div className={styles.transactionProgress}>
-                          {rewardsData.transaction_count < 20 ? (
+                          {rewardsData.transaction_count < 5 ? (
                             <>
                               <span className={styles.progressText}>
-                                {rewardsData.transaction_count}/20 transactions
+                                {rewardsData.transaction_count}/5 transactions
                               </span>
                               <span className={styles.progressHint}>
-                                ({20 - rewardsData.transaction_count} more for full bonus!)
+                                ({5 - rewardsData.transaction_count} more for full bonus!)
                               </span>
                             </>
                           ) : (
                             <span className={styles.progressComplete}>
-                              ✓ All 20 transaction bonuses earned!
+                              ✓ All 5 transaction bonuses earned!
                             </span>
                           )}
                         </div>
@@ -138,7 +138,7 @@ export default function Rewards() {
                       <div className={styles.achievementIcon}>💰</div>
                       <div className={styles.achievementInfo}>
                         <h4>Add Income</h4>
-                        <p>+10 points (first 20 only)</p>
+                        <p>+10 points (first 5 only)</p>
                       </div>
                     </div>
 
@@ -146,7 +146,15 @@ export default function Rewards() {
                       <div className={styles.achievementIcon}>💸</div>
                       <div className={styles.achievementInfo}>
                         <h4>Add Expense</h4>
-                        <p>+10 points (first 20 only)</p>
+                        <p>+10 points (first 5, if within limit)</p>
+                      </div>
+                    </div>
+
+                    <div className={styles.achievementCard}>
+                      <div className={styles.achievementIcon}>⚠️</div>
+                      <div className={styles.achievementInfo}>
+                        <h4>Expense Over Limit</h4>
+                        <p>-30 points penalty (always applied!)</p>
                       </div>
                     </div>
 
@@ -154,7 +162,7 @@ export default function Rewards() {
                       <div className={styles.achievementIcon}>💳</div>
                       <div className={styles.achievementInfo}>
                         <h4>Add Loan</h4>
-                        <p>+10 points (first 20 only)</p>
+                        <p>+10 points (first 5 only)</p>
                       </div>
                     </div>
 
@@ -162,7 +170,7 @@ export default function Rewards() {
                       <div className={styles.achievementIcon}>✅</div>
                       <div className={styles.achievementInfo}>
                         <h4>Timely Loan Repayment</h4>
-                        <p>+50 bonus (always!) + 10 base (first 20)</p>
+                        <p>+50 bonus (always!) + 10 base (first 5)</p>
                       </div>
                     </div>
 

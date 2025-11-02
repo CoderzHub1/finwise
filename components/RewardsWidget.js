@@ -47,10 +47,19 @@ export default function RewardsWidget({ refreshTrigger }) {
         setPoints(newPoints);
         setTransactionCount(data.transaction_count || 0);
         
-        // Calculate points gained since last check
-        if (prevPoints > 0 && newPoints > prevPoints) {
+        // Calculate points gained or lost since last check
+        if (prevPoints > 0 && newPoints !== prevPoints) {
           const gained = newPoints - prevPoints;
           setPointsGained(gained);
+          
+          // Show celebration/penalty popup for point changes
+          if (gained !== 0) {
+            setShowCelebration(true);
+            setTimeout(() => {
+              setShowCelebration(false);
+              setPointsGained(0);
+            }, 5000);
+          }
         }
         
         // Check for NEW bonuses using localStorage to prevent duplicates
@@ -153,6 +162,13 @@ export default function RewardsWidget({ refreshTrigger }) {
                 <h2 className={styles.celebrationTitle}>Points Earned!</h2>
                 <div className={styles.celebrationPoints}>+{pointsGained}</div>
               </>
+            ) : pointsGained < 0 ? (
+              <>
+                <div className={styles.celebrationEmoji}>⚠️</div>
+                <h2 className={styles.celebrationTitle}>Limit Exceeded!</h2>
+                <div className={styles.celebrationPenalty}>{pointsGained} points</div>
+                <div className={styles.celebrationMessage}>You exceeded your category spending limit</div>
+              </>
             ) : null}
           </div>
           <div className={styles.confetti}>
@@ -178,9 +194,9 @@ export default function RewardsWidget({ refreshTrigger }) {
         <div className={styles.content}>
           <div className={styles.label}>
             {content.points}
-            {transactionCount < 20 && (
+            {transactionCount < 5 && (
               <span className={styles.transactionHint}>
-                ({transactionCount}/20 transactions)
+                ({transactionCount}/5 transactions)
               </span>
             )}
           </div>
