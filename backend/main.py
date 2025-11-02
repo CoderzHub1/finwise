@@ -582,6 +582,9 @@ def add_post():
     if not username or not password or not content:
         return jsonify({'error': 'username, password, and content are required'}), 400
     
+    # Convert \n string literals back to actual newlines
+    content = content.replace('\\n', '\n')
+    
     a = db.get_collection("userInfo")
     user = a.find_one({'username': username})
     

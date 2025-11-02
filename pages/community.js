@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, User, TrendingUp, BookOpen, PiggyBank, Target, Award, Filter, MessageSquare, ThumbsUp, Share2, Bookmark, MoreVertical, Plus, Home, Users, Trophy, Settings, ChevronDown, Tag, Send } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, User, TrendingUp, BookOpen, PiggyBank, Target, Award, Filter, MessageSquare, ThumbsUp, Share2, Bookmark, MoreVertical, Plus, Home, Users, Trophy, Settings, ChevronDown, Tag, Send, Bold, Italic, Link2, List, Code, Heading1, Heading2, Heading3 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { marked } from 'marked';
@@ -20,6 +20,7 @@ const FinanceCommunityPlatform = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [newPostContent, setNewPostContent] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const textareaRef = useRef(null);
 
   // Configure marked options for better security and formatting
   marked.setOptions({
@@ -39,6 +40,41 @@ const FinanceCommunityPlatform = () => {
       return markdownText; // Return original text if parsing fails
     }
   };
+
+  // Formatting functions for the editor
+  const insertFormatting = (before, after = '', placeholder = 'text') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = newPostContent.substring(start, end);
+    const textToInsert = selectedText || placeholder;
+    
+    const newText = 
+      newPostContent.substring(0, start) + 
+      before + textToInsert + after + 
+      newPostContent.substring(end);
+    
+    setNewPostContent(newText);
+    
+    // Set cursor position after formatting
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + before.length + textToInsert.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+  };
+
+  const applyBold = () => insertFormatting('**', '**', 'bold text');
+  const applyItalic = () => insertFormatting('*', '*', 'italic text');
+  const applyHeading1 = () => insertFormatting('# ', '', 'Heading 1');
+  const applyHeading2 = () => insertFormatting('## ', '', 'Heading 2');
+  const applyHeading3 = () => insertFormatting('### ', '', 'Heading 3');
+  const applyInlineCode = () => insertFormatting('`', '`', 'code');
+  const applyCodeBlock = () => insertFormatting('```\n', '\n```', 'code block');
+  const applyBulletList = () => insertFormatting('- ', '', 'list item');
+  const applyLink = () => insertFormatting('[', '](url)', 'link text');
 
   // Fetch posts from backend
   useEffect(() => {
@@ -173,10 +209,13 @@ const FinanceCommunityPlatform = () => {
     }
 
     try {
+      // Convert actual newlines to \n string for single-line transmission
+      const singleLineContent = newPostContent.replace(/\n/g, '\\n');
+      
       const response = await axios.post('http://localhost:5000/add-post', {
         username: user.username,
         password: user.password,
-        content: newPostContent
+        content: singleLineContent
       });
 
       // Refresh posts after creating
@@ -438,10 +477,10 @@ const FinanceCommunityPlatform = () => {
                 </div>
 
                 {/* Post Content */}
-                <div 
+                {/* <div 
                   className={styles.postTitle}
                   dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(post.title) }}
-                />
+                /> */}
                 <div 
                   className={styles.postContent}
                   dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(post.content) }}
@@ -540,15 +579,108 @@ const FinanceCommunityPlatform = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h2 className={styles.modalTitle}>Create New Post</h2>
-            <p className={styles.markdownInfo}>
-              ✨ Markdown supported! Use **bold**, *italic*, [links](url), # headings, and more.
-            </p>
-            <textarea
-              value={newPostContent}
-              onChange={(e) => setNewPostContent(e.target.value)}
-              placeholder="Share your financial wisdom, ask questions, or tell your success story..."
-              className={styles.modalTextarea}
-            />
+            
+            {/* Formatting Toolbar */}
+            <div className={styles.formattingToolbar}>
+              <button 
+                onClick={applyBold} 
+                className={styles.toolbarButton}
+                title="Bold"
+                type="button"
+              >
+                <Bold size={18} />
+              </button>
+              <button 
+                onClick={applyItalic} 
+                className={styles.toolbarButton}
+                title="Italic"
+                type="button"
+              >
+                <Italic size={18} />
+              </button>
+              <div className={styles.toolbarDivider}></div>
+              <button 
+                onClick={applyHeading1} 
+                className={styles.toolbarButton}
+                title="Heading 1"
+                type="button"
+              >
+                <Heading1 size={18} />
+              </button>
+              <button 
+                onClick={applyHeading2} 
+                className={styles.toolbarButton}
+                title="Heading 2"
+                type="button"
+              >
+                <Heading2 size={18} />
+              </button>
+              <button 
+                onClick={applyHeading3} 
+                className={styles.toolbarButton}
+                title="Heading 3"
+                type="button"
+              >
+                <Heading3 size={18} />
+              </button>
+              <div className={styles.toolbarDivider}></div>
+              <button 
+                onClick={applyLink} 
+                className={styles.toolbarButton}
+                title="Link"
+                type="button"
+              >
+                <Link2 size={18} />
+              </button>
+              <button 
+                onClick={applyBulletList} 
+                className={styles.toolbarButton}
+                title="Bullet List"
+                type="button"
+              >
+                <List size={18} />
+              </button>
+              <div className={styles.toolbarDivider}></div>
+              <button 
+                onClick={applyInlineCode} 
+                className={styles.toolbarButton}
+                title="Inline Code"
+                type="button"
+              >
+                <Code size={18} />
+              </button>
+              <button 
+                onClick={applyCodeBlock} 
+                className={styles.toolbarButton}
+                title="Code Block"
+                type="button"
+              >
+                <Code size={18} />
+                <span style={{ fontSize: '10px', marginLeft: '2px' }}>{ }</span>
+              </button>
+            </div>
+
+            {/* Editor and Preview */}
+            <div className={styles.editorContainer}>
+              <div className={styles.editorSection}>
+                <label className={styles.editorLabel}>Write (Markdown)</label>
+                <textarea
+                  ref={textareaRef}
+                  value={newPostContent}
+                  onChange={(e) => setNewPostContent(e.target.value)}
+                  placeholder="Share your financial wisdom, ask questions, or tell your success story..."
+                  className={styles.modalTextarea}
+                />
+              </div>
+              <div className={styles.previewSection}>
+                <label className={styles.editorLabel}>Preview</label>
+                <div 
+                  className={styles.previewContent}
+                  dangerouslySetInnerHTML={{ __html: convertMarkdownToHtml(newPostContent) || '<p style="color: #9ca3af;">Preview will appear here...</p>' }}
+                />
+              </div>
+            </div>
+
             <div className={styles.modalButtons}>
               <button
                 onClick={() => {

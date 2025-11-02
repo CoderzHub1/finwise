@@ -727,15 +727,175 @@
   font-weight: 500;
 }
 
+/* Formatting Toolbar */
+.formattingToolbar {
+  display: flex;
+  gap: 4px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border: 2px solid #000;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbarButton {
+  padding: 8px 12px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.toolbarButton:hover {
+  background-color: #dbeafe;
+  transform: translateY(-2px);
+}
+
+.toolbarButton:active {
+  transform: translateY(0);
+}
+
+.toolbarDivider {
+  width: 2px;
+  background-color: #000;
+  margin: 0 4px;
+}
+
+/* Editor Container */
+.editorContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.editorSection,
+.previewSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorLabel {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
 .modalTextarea {
   width: 100%;
-  min-height: 200px;
+  min-height: 300px;
   padding: 16px;
   border: 2px solid #000;
   border-radius: 8px;
   font-size: 14px;
-  font-family: inherit;
+  font-family: 'Courier New', monospace;
   resize: vertical;
+  line-height: 1.6;
+}
+
+.previewContent {
+  width: 100%;
+  min-height: 300px;
+  padding: 16px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #fff;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+
+/* Apply markdown styles to preview */
+.previewContent h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.previewContent h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 10px;
+}
+
+.previewContent h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.previewContent p {
+  margin-bottom: 12px;
+}
+
+.previewContent a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.previewContent ul,
+.previewContent ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.previewContent li {
+  margin-bottom: 6px;
+}
+
+.previewContent code {
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  border: 1px solid #e5e7eb;
+}
+
+.previewContent pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 2px solid #000;
+}
+
+.previewContent pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: #f9fafb;
+}
+
+.previewContent strong {
+  font-weight: bold;
+}
+
+.previewContent em {
+  font-style: italic;
+}
+
+.previewContent blockquote {
+  border-left: 4px solid #000;
+  padding-left: 16px;
+  margin: 16px 0;
+  color: #4b5563;
+  font-style: italic;
+  background-color: #f9fafb;
+  padding: 12px 16px;
 }
 
 .modalButtons {
@@ -899,6 +1059,19 @@
 
   .modalTitle {
     font-size: 20px;
+  }
+
+  .editorContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .formattingToolbar {
+    gap: 2px;
+    padding: 8px;
+  }
+
+  .toolbarButton {
+    padding: 6px 8px;
   }
 }
 
