@@ -1,10 +1,26 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import styles from '@/styles/Forms.module.css';
 
 export default function LoanForm({ onLoanAdded }) {
   const { user } = useAuth();
+  const content = useTranslatedContent({
+    title: '💰 Manage Loans',
+    loanTaken: 'Loan Taken',
+    loanRepayment: 'Loan Repayment',
+    amountLabel: 'Amount ($)',
+    amountPlaceholder: 'Enter amount',
+    lenderLabel: 'Lender/Borrower',
+    lenderPlaceholderTaken: 'Who did you borrow from?',
+    lenderPlaceholderRepayment: 'Who are you repaying?',
+    paidOnTimeLabel: 'Paid on time?',
+    submitButton: 'Record Loan',
+    loginRequired: 'Please login first',
+    successMessage: 'Loan recorded successfully!',
+    failedMessage: 'Failed to record loan'
+  });
   const [loanType, setLoanType] = useState('taken'); // 'taken' or 'repayment'
   const [formData, setFormData] = useState({
     amount: '',
@@ -25,7 +41,7 @@ export default function LoanForm({ onLoanAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setMessage({ text: 'Please login first', type: 'error' });
+      setMessage({ text: content.loginRequired, type: 'error' });
       return;
     }
 
@@ -51,17 +67,17 @@ export default function LoanForm({ onLoanAdded }) {
       const response = await axios.post(endpoint, payload);
 
       if (response.data.msg) {
-        setMessage({ text: response.data.msg, type: 'success' });
+        setMessage({ text: content.successMessage, type: 'success' });
         setFormData({ amount: '', lender: '', is_paid_on_time: true });
         if (onLoanAdded) {
           onLoanAdded(loanType, parseFloat(formData.amount));
         }
       } else {
-        setMessage({ text: response.data.error || 'Failed to add loan', type: 'error' });
+        setMessage({ text: response.data.error || content.failedMessage, type: 'error' });
       }
     } catch (error) {
       setMessage({ 
-        text: error.response?.data?.error || 'Failed to add loan', 
+        text: error.response?.data?.error || content.failedMessage, 
         type: 'error' 
       });
     } finally {
@@ -71,7 +87,7 @@ export default function LoanForm({ onLoanAdded }) {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.formTitle}>⟷ Manage Loans</h2>
+      <h2 className={styles.formTitle}>{content.title}</h2>
       
       <div className={styles.tabContainer}>
         <button
@@ -79,14 +95,14 @@ export default function LoanForm({ onLoanAdded }) {
           className={`${styles.tab} ${loanType === 'taken' ? styles.activeTab : ''}`}
           onClick={() => setLoanType('taken')}
         >
-          Loan Taken
+          {content.loanTaken}
         </button>
         <button
           type="button"
           className={`${styles.tab} ${loanType === 'repayment' ? styles.activeTab : ''}`}
           onClick={() => setLoanType('repayment')}
         >
-          Repayment
+          {content.loanRepayment}
         </button>
       </div>
 
@@ -98,7 +114,7 @@ export default function LoanForm({ onLoanAdded }) {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="amount">Amount ($)</label>
+          <label htmlFor="amount">{content.amountLabel}</label>
           <input
             id="amount"
             name="amount"
@@ -108,15 +124,13 @@ export default function LoanForm({ onLoanAdded }) {
             value={formData.amount}
             onChange={handleChange}
             required
-            placeholder="Enter amount"
+            placeholder={content.amountPlaceholder}
             className={styles.input}
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="lender">
-            {loanType === 'taken' ? 'Lender' : 'Lender (Repaying to)'}
-          </label>
+          <label htmlFor="lender">{content.lenderLabel}</label>
           <input
             id="lender"
             name="lender"
@@ -124,7 +138,7 @@ export default function LoanForm({ onLoanAdded }) {
             value={formData.lender}
             onChange={handleChange}
             required
-            placeholder="e.g., Bank, Friend, Credit Card"
+            placeholder={loanType === 'taken' ? content.lenderPlaceholderTaken : content.lenderPlaceholderRepayment}
             className={styles.input}
           />
         </div>
@@ -138,7 +152,7 @@ export default function LoanForm({ onLoanAdded }) {
                 checked={formData.is_paid_on_time}
                 onChange={handleChange}
               />
-              <span>Paid on time</span>
+              <span>{content.paidOnTimeLabel}</span>
             </label>
           </div>
         )}
@@ -148,7 +162,7 @@ export default function LoanForm({ onLoanAdded }) {
           disabled={loading}
           className={`${styles.submitBtn} ${styles.loanBtn}`}
         >
-          {loading ? 'Adding...' : loanType === 'taken' ? '+ Add Loan Taken' : '- Add Repayment'}
+          {loading ? 'Adding...' : content.submitButton}
         </button>
       </form>
     </div>

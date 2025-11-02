@@ -1,11 +1,27 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@/styles/Auth.module.css';
 
 export default function Signup() {
+  const content = useTranslatedContent({
+    title: 'Create Account',
+    subtitle: 'Join FinWise to start tracking your finances',
+    nameLabel: 'Full Name',
+    usernameLabel: 'Username',
+    emailLabel: 'Email',
+    passwordLabel: 'Password',
+    ageLabel: 'Age',
+    signUpButton: 'Sign Up',
+    signingUp: 'Creating account...',
+    haveAccount: 'Already have an account?',
+    loginLink: 'Login here',
+    pageTitle: 'Sign Up - Financial Homie',
+    pageDescription: 'Create your account'
+  });
   const [formData, setFormData] = useState({
     name: '',
     username: '',

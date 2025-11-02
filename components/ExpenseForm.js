@@ -1,10 +1,25 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import styles from '@/styles/Forms.module.css';
 
 export default function ExpenseForm({ onExpenseAdded }) {
   const { user } = useAuth();
+  const content = useTranslatedContent({
+    title: '↓ Add Expense',
+    amountLabel: 'Amount ($)',
+    amountPlaceholder: 'Enter amount',
+    categoryLabel: 'Category',
+    categoryPlaceholder: 'Select a category',
+    submitButton: 'Add Expense',
+    loginRequired: 'Please login first',
+    selectCategory: 'Please select a category',
+    successMessage: 'Expense added successfully!',
+    failedMessage: 'Failed to add expense',
+    loadingCategories: 'Loading categories...',
+    noCategories: 'No categories found. Add categories in My Account.'
+  });
   const [formData, setFormData] = useState({
     amount: '',
     category: ''
@@ -58,7 +73,12 @@ export default function ExpenseForm({ onExpenseAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setMessage({ text: 'Please login first', type: 'error' });
+      setMessage({ text: content.loginRequired, type: 'error' });
+      return;
+    }
+
+    if (!formData.category) {
+      setMessage({ text: content.selectCategory, type: 'error' });
       return;
     }
 
@@ -74,17 +94,17 @@ export default function ExpenseForm({ onExpenseAdded }) {
       });
 
       if (response.data.msg) {
-        setMessage({ text: response.data.msg, type: 'success' });
+        setMessage({ text: content.successMessage, type: 'success' });
         setFormData({ amount: '', category: '' });
         if (onExpenseAdded) {
           onExpenseAdded(parseFloat(formData.amount));
         }
       } else {
-        setMessage({ text: response.data.error || 'Failed to add expense', type: 'error' });
+        setMessage({ text: response.data.error || content.failedMessage, type: 'error' });
       }
     } catch (error) {
       setMessage({ 
-        text: error.response?.data?.error || 'Failed to add expense', 
+        text: error.response?.data?.error || content.failedMessage, 
         type: 'error' 
       });
     } finally {
@@ -94,7 +114,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.formTitle}>↓ Add Expense</h2>
+      <h2 className={styles.formTitle}>{content.title}</h2>
       
       {message.text && (
         <div className={`${styles.message} ${styles[message.type]}`}>
@@ -104,7 +124,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="amount">Amount ($)</label>
+          <label htmlFor="amount">{content.amountLabel}</label>
           <input
             id="amount"
             name="amount"
@@ -114,13 +134,13 @@ export default function ExpenseForm({ onExpenseAdded }) {
             value={formData.amount}
             onChange={handleChange}
             required
-            placeholder="Enter amount"
+            placeholder={content.amountPlaceholder}
             className={styles.input}
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="category">Category</label>
+          <label htmlFor="category">{content.categoryLabel}</label>
           <select
             id="category"
             name="category"
@@ -129,10 +149,10 @@ export default function ExpenseForm({ onExpenseAdded }) {
             required
             className={styles.select}
           >
-            <option value="">Select a category</option>
-            {categories.map(cat => (
+            <option value="">{content.categoryPlaceholder}</option>
+            {categories.length > 0 ? categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>
-            ))}
+            )) : <option disabled>{content.noCategories}</option>}
           </select>
         </div>
 
@@ -141,7 +161,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
           disabled={loading}
           className={`${styles.submitBtn} ${styles.expenseBtn}`}
         >
-          {loading ? 'Adding...' : '- Add Expense'}
+          {loading ? 'Adding...' : content.submitButton}
         </button>
       </form>
     </div>

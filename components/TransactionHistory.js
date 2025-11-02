@@ -1,10 +1,31 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import styles from '@/styles/TransactionHistory.module.css';
 
 export default function TransactionHistory({ refreshTrigger }) {
   const { user } = useAuth();
+  const content = useTranslatedContent({
+    title: 'Transaction History',
+    all: 'All',
+    income: 'Income',
+    expenses: 'Expenses',
+    loans: 'Loans',
+    loading: 'Loading transactions...',
+    noTransactions: 'No transactions yet. Start tracking your finances!',
+    noTransactionsFiltered: 'No transactions match this filter.',
+    date: 'Date',
+    type: 'Type',
+    amount: 'Amount',
+    category: 'Category',
+    source: 'Source',
+    lender: 'Lender',
+    typeIncome: 'Income',
+    typeExpense: 'Expense',
+    typeLoanTaken: 'Loan Taken',
+    typeLoanRepayment: 'Loan Repayment'
+  });
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'income', 'debit', 'loan'
@@ -102,37 +123,37 @@ export default function TransactionHistory({ refreshTrigger }) {
   const filteredTransactions = getFilteredTransactions();
 
   if (loading) {
-    return <div className={styles.loading}>Loading transactions...</div>;
+    return <div className={styles.loading}>{content.loading}</div>;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>● Transaction History</h2>
+        <h2 className={styles.title}>● {content.title}</h2>
         <div className={styles.filterButtons}>
           <button 
             className={filter === 'all' ? styles.activeFilter : ''}
             onClick={() => setFilter('all')}
           >
-            All
+            {content.all}
           </button>
           <button 
             className={filter === 'income' ? styles.activeFilter : ''}
             onClick={() => setFilter('income')}
           >
-            Income
+            {content.income}
           </button>
           <button 
             className={filter === 'debit' ? styles.activeFilter : ''}
             onClick={() => setFilter('debit')}
           >
-            Expenses
+            {content.expenses}
           </button>
           <button 
             className={filter === 'loan' ? styles.activeFilter : ''}
             onClick={() => setFilter('loan')}
           >
-            Loans
+            {content.loans}
           </button>
         </div>
       </div>

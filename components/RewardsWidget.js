@@ -1,11 +1,19 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/router';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import styles from '@/styles/RewardsWidget.module.css';
 
 export default function RewardsWidget({ refreshTrigger }) {
   const { user } = useAuth();
   const router = useRouter();
+  const content = useTranslatedContent({
+    title: 'Rewards',
+    points: 'Points',
+    viewRewards: 'View Rewards',
+    earnedPoints: 'earned',
+    loading: 'Loading...'
+  });
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
   const [streakBonuses, setStreakBonuses] = useState([]);
@@ -169,7 +177,7 @@ export default function RewardsWidget({ refreshTrigger }) {
         </div>
         <div className={styles.content}>
           <div className={styles.label}>
-            Reward Points 
+            {content.points}
             {transactionCount < 20 && (
               <span className={styles.transactionHint}>
                 ({transactionCount}/20 transactions)

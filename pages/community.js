@@ -57,7 +57,6 @@ const FinanceCommunityPlatform = () => {
             id: post.post_id,
             author: post.username,
             avatar: initials,
-            reputation: 1000, // Default reputation
             title: post.content.split('\n')[0].substring(0, 100), // First line as title
             content: post.content,
             category: post.keywords && post.keywords.length > 0 ? post.keywords[0] : 'general',
@@ -401,9 +400,6 @@ const FinanceCommunityPlatform = () => {
                     </div>
                     <div className={styles.authorDetails}>
                       <h3>{post.author}</h3>
-                      <span className={styles.reputationBadge}>
-                        {post.reputation} pts
-                      </span>
                       <div className={styles.authorBadges}>
                         {post.badges.map((badge, idx) => (
                           <span key={idx} className={styles.authorBadge}>
@@ -490,7 +486,7 @@ const FinanceCommunityPlatform = () => {
         </main>
 
         {/* Right Sidebar */}
-        <aside className={styles.rightSidebar}>
+        {/* <aside className={styles.rightSidebar}>
           <div className={styles.challengeCard}>
             <h3>Community Challenges</h3>
             <div className={styles.challengeItem}>
@@ -510,7 +506,7 @@ const FinanceCommunityPlatform = () => {
               <span className={styles.participantsCount}>189 participants</span>
             </div>
           </div>
-        </aside>
+        </aside> */}
       </div>
 
       {/* Create Post Modal */}
