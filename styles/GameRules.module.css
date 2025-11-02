@@ -1,13 +1,13 @@
 .pageContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff;
   padding-bottom: 2rem;
 }
 
 .mainContent {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 40px;
 }
 
 .rulesContainer {
@@ -32,9 +32,10 @@
 
 .title {
   font-size: 3.5rem;
-  color: white;
+  color: #000000;
   margin-bottom: 1rem;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   animation: fadeIn 0.8s ease-in;
 }
 
@@ -45,8 +46,8 @@
 
 .subtitle {
   font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 300;
+  color: #525252;
+  font-weight: 400;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -56,11 +57,12 @@
 }
 
 .introCard {
-  background: white;
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 24px;
+  padding: 40px;
   text-align: center;
+  animation: fadeInUp 0.6s ease 0.2s backwards;
 }
 
 .introIcon {
@@ -70,13 +72,14 @@
 
 .introCard h2 {
   font-size: 2rem;
-  color: #667eea;
+  color: #000000;
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .introCard p {
   font-size: 1.1rem;
-  color: #4a5568;
+  color: #525252;
   line-height: 1.8;
   max-width: 800px;
   margin: 0 auto;
@@ -88,10 +91,10 @@
 
 .sectionTitle {
   font-size: 2.5rem;
-  color: white;
+  color: #000000;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
 }
 
 .rulesList {
@@ -101,15 +104,16 @@
 }
 
 .ruleCard {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 24px;
+  padding: 40px;
   display: flex;
   gap: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease;
   position: relative;
   overflow: hidden;
+  animation: fadeInUp 0.6s ease;
 }
 
 .ruleCard::before {
@@ -119,27 +123,26 @@
   left: 0;
   width: 6px;
   height: 100%;
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+  background: #000000;
 }
 
 .ruleCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  border-color: #d4d4d4;
 }
 
 .ruleNumber {
   flex-shrink: 0;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #000000;
+  color: #ffffff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
   font-weight: bold;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .ruleContent {
@@ -160,24 +163,25 @@
 
 .ruleHeader h3 {
   font-size: 1.8rem;
-  color: #2d3748;
+  color: #000000;
   flex: 1;
   min-width: 200px;
+  font-weight: 700;
 }
 
 .rulePoints {
-  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-  color: white;
+  background: #000000;
+  color: #ffffff;
   padding: 0.5rem 1.5rem;
   border-radius: 30px;
   font-weight: bold;
   font-size: 1.1rem;
-  box-shadow: 0 4px 12px rgba(25, 84, 123, 0.3);
+  border: 2px solid #000000;
 }
 
 .ruleContent p {
   font-size: 1.05rem;
-  color: #4a5568;
+  color: #525252;
   line-height: 1.7;
   margin-bottom: 1rem;
 }
@@ -190,7 +194,7 @@
 
 .ruleContent ul li {
   font-size: 1rem;
-  color: #4a5568;
+  color: #525252;
   padding: 0.5rem 0;
   padding-left: 1.5rem;
   position: relative;
@@ -200,26 +204,28 @@
   content: '✓';
   position: absolute;
   left: 0;
-  color: #667eea;
+  color: #000000;
   font-weight: bold;
 }
 
 .ruleTip {
-  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   margin-top: 1rem;
   font-size: 0.95rem;
-  color: #2d3748;
-  border-left: 4px solid #667eea;
+  color: #000000;
+  border-left: 4px solid #000000;
 }
 
 .ruleTip strong {
-  color: #667eea;
+  color: #000000;
 }
 
 .weekExample {
-  background: #f7fafc;
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
   padding: 1rem;
   border-radius: 12px;
   margin: 1rem 0;
@@ -230,12 +236,12 @@
 
 .weekLabel {
   font-weight: 600;
-  color: #4a5568;
+  color: #000000;
 }
 
 .weekDays {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #000000;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-weight: bold;
@@ -246,33 +252,33 @@
 }
 
 .formulaTitle {
-  font-weight: 600;
-  color: #2d3748;
+  font-weight: 700;
+  color: #000000;
   margin-bottom: 0.5rem;
 }
 
 .formulaBox {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #000000;
+  color: #ffffff;
   padding: 1.5rem;
   border-radius: 12px;
   font-size: 1.1rem;
   font-weight: 500;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  border: 2px solid #000000;
 }
 
 .exampleBox {
-  background: #f7fafc;
+  background: #f5f5f5;
   padding: 1.5rem;
   border-radius: 12px;
   margin: 1rem 0;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #e5e5e5;
 }
 
 .exampleTitle {
-  font-weight: 600;
-  color: #2d3748;
+  font-weight: 700;
+  color: #000000;
   margin-bottom: 0.75rem;
 }
 
@@ -305,17 +311,17 @@
 }
 
 .strategyCard {
-  background: white;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
   padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-radius: 24px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .strategyCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  border-color: #d4d4d4;
 }
 
 .strategyIcon {
@@ -325,33 +331,36 @@
 
 .strategyCard h3 {
   font-size: 1.4rem;
-  color: #667eea;
+  color: #000000;
   margin-bottom: 0.75rem;
+  font-weight: 700;
 }
 
 .strategyCard p {
   font-size: 1rem;
-  color: #4a5568;
+  color: #525252;
   line-height: 1.6;
 }
 
 .ctaSection {
-  background: white;
-  border-radius: 20px;
-  padding: 3rem;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 24px;
+  padding: 40px;
   text-align: center;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.6s ease 0.6s backwards;
 }
 
 .ctaSection h2 {
   font-size: 2.5rem;
-  color: #667eea;
+  color: #000000;
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .ctaSection p {
   font-size: 1.2rem;
-  color: #4a5568;
+  color: #525252;
   margin-bottom: 2rem;
 }
 
@@ -366,32 +375,33 @@
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
   font-weight: bold;
-  border: none;
+  border: 2px solid #000000;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  background: #000000;
+  color: #ffffff;
 }
 
 .primaryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  background: #262626;
+  border-color: #262626;
 }
 
 .secondaryButton {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+  background: #ffffff;
+  color: #000000;
+  border-color: #e5e5e5;
 }
 
 .secondaryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+  background: #f5f5f5;
+  border-color: #d4d4d4;
 }
 
 .primaryButton:active, .secondaryButton:active {

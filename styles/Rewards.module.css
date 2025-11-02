@@ -1,23 +1,23 @@
 .pageContainer {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff;
   padding-bottom: 2rem;
 }
 
 .mainContent {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 40px;
 }
 
 .rewardsContainer {
-  animation: fadeIn 0.5s ease-in;
+  animation: fadeInUp 0.6s ease;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -27,22 +27,24 @@
 
 .title {
   font-size: 3rem;
-  color: white;
+  color: #000000;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .loading {
   text-align: center;
-  color: white;
+  color: #000000;
   font-size: 1.5rem;
   padding: 4rem;
 }
 
 .error {
-  background: rgba(239, 68, 68, 0.9);
-  color: white;
+  background: #f8d7da;
+  color: #721c24;
+  border: 2px solid #f5c6cb;
   padding: 1rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
@@ -51,17 +53,19 @@
 }
 
 .pointsCard {
-  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
   border-radius: 24px;
   padding: 3rem;
   margin-bottom: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   transform: scale(1);
   transition: transform 0.3s ease;
+  animation: fadeInUp 0.6s ease 0.2s backwards;
 }
 
 .pointsCard:hover {
-  transform: scale(1.02);
+  border-color: #d4d4d4;
+  transform: translateY(-2px);
 }
 
 .pointsDisplay {
@@ -91,23 +95,23 @@
 
 .pointsTitle {
   font-size: 1.5rem;
-  color: white;
+  color: #000000;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
+  font-weight: 700;
 }
 
 .pointsValue {
   font-size: 4rem;
   font-weight: bold;
-  color: white;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  color: #000000;
 }
 
 .transactionProgress {
   margin-top: 0.75rem;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: #525252;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -115,34 +119,37 @@
 
 .progressText {
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.2);
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   display: inline-block;
+  color: #000000;
 }
 
 .progressHint {
   font-size: 0.85rem;
-  opacity: 0.9;
+  color: #525252;
   font-style: italic;
 }
 
 .progressComplete {
   font-weight: 600;
-  background: rgba(76, 175, 80, 0.3);
+  background: #e8f5e9;
+  border: 2px solid #c8e6c9;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   display: inline-block;
-  color: #4caf50;
+  color: #2e7d32;
 }
 
 .bonusAlert {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
   border-radius: 20px;
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 40px rgba(245, 87, 108, 0.4);
-  color: white;
+  color: #000000;
   animation: slideInBounce 0.6s ease-out;
 }
 
@@ -164,18 +171,25 @@
   font-size: 2rem;
   margin-bottom: 1rem;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  color: #000000;
 }
 
 .bonusItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   margin-bottom: 0.75rem;
   animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .bonusItem:last-child {
@@ -185,29 +199,33 @@
 .bonusMessage {
   font-size: 1.2rem;
   font-weight: 600;
+  color: #000000;
 }
 
 .bonusPoints {
   font-size: 1.5rem;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.3);
+  background: #000000;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 8px;
 }
 
 .achievementsSection {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 24px;
+  padding: 40px;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.6s ease 0.4s backwards;
 }
 
 .sectionTitle {
   font-size: 2rem;
-  color: #667eea;
+  color: #000000;
   margin-bottom: 1.5rem;
   text-align: center;
+  font-weight: 700;
 }
 
 .streakCards {
@@ -218,18 +236,18 @@
 }
 
 .streakCard {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  color: #000000;
   padding: 2rem;
   border-radius: 16px;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .streakCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  border-color: #d4d4d4;
 }
 
 .streakIcon {
@@ -240,18 +258,22 @@
 .streakCard h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #000000;
 }
 
 .streakInfo {
   font-size: 0.9rem;
-  opacity: 0.9;
+  color: #525252;
   margin-bottom: 1rem;
 }
 
 .streakReward {
   font-size: 1.3rem;
   font-weight: bold;
-  background: rgba(255, 255, 255, 0.2);
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
+  color: #000000;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   display: inline-block;
@@ -262,18 +284,18 @@
   padding: 1rem 2rem;
   font-size: 1.2rem;
   font-weight: bold;
-  color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
+  color: #ffffff;
+  background: #000000;
+  border: 2px solid #000000;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: transform 0.2s ease;
 }
 
 .checkButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  background: #262626;
+  border-color: #262626;
 }
 
 .checkButton:active {
@@ -291,15 +313,16 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  background: #f5f5f5;
+  border: 2px solid #e5e5e5;
   border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .achievementCard:hover {
   transform: translateX(5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  border-color: #d4d4d4;
+  background: #ffffff;
 }
 
 .achievementIcon {
@@ -309,14 +332,15 @@
 
 .achievementInfo h4 {
   font-size: 1.1rem;
-  color: #4a5568;
+  color: #000000;
+  font-weight: 700;
   margin-bottom: 0.25rem;
 }
 
 .achievementInfo p {
   font-size: 0.95rem;
-  color: #667eea;
-  font-weight: 600;
+  color: #525252;
+  font-weight: 500;
 }
 
 .rulesLink {
@@ -328,18 +352,18 @@
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
   font-weight: bold;
-  color: white;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border: none;
+  color: #ffffff;
+  background: #000000;
+  border: 2px solid #000000;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+  transition: transform 0.2s ease;
 }
 
 .rulesButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(240, 147, 251, 0.6);
+  background: #262626;
+  border-color: #262626;
 }
 
 .rulesButton:active {
