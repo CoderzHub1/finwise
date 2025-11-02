@@ -22,7 +22,7 @@ export default function Login() {
     loggingIn: 'Logging in...',
     noAccount: "Don't have an account?",
     signUpLink: 'Sign up here',
-    pageTitle: 'Login - Financial Homie',
+    pageTitle: 'Login - FinWise',
     pageDescription: 'Login to your account'
   });
 

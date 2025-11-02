@@ -8,7 +8,7 @@ export default function Home() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const content = useTranslatedContent({
-    title: 'Financial Homie',
+    title: 'FinWise',
     description: 'Track your finances with gamification',
     loading: 'Loading...'
   });

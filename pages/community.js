@@ -376,7 +376,7 @@ const FinanceCommunityPlatform = () => {
       <div className={styles.mainContent}>
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          <div className={styles.sidebarCard}>
+          {/* <div className={styles.sidebarCard}>
             <h3>Categories</h3>
             {categories.map(cat => {
               const Icon = cat.icon;
@@ -391,9 +391,9 @@ const FinanceCommunityPlatform = () => {
                 </button>
               );
             })}
-          </div>
+          </div> */}
 
-          <div className={styles.sidebarCard}>
+          {/* <div className={styles.sidebarCard}>
             <h3>Your Badges</h3>
             <div className={styles.badgeContainer}>
               {userBadges.map((badge, idx) => (
@@ -402,7 +402,7 @@ const FinanceCommunityPlatform = () => {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           <button 
             onClick={() => setShowCreatePost(true)}

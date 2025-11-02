@@ -19,7 +19,7 @@ export default function Signup() {
     signingUp: 'Creating account...',
     haveAccount: 'Already have an account?',
     loginLink: 'Login here',
-    pageTitle: 'Sign Up - Financial Homie',
+    pageTitle: 'Sign Up - FinWise',
     pageDescription: 'Create your account'
   });
   const [formData, setFormData] = useState({
@@ -61,7 +61,7 @@ export default function Signup() {
   return (
     <>
       <Head>
-        <title>Sign Up - Financial Homie</title>
+        <title>Sign Up - FinWise</title>
         <meta name="description" content="Create your account" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -69,7 +69,7 @@ export default function Signup() {
 
       <div className={styles.container}>
         <div className={styles.formCard}>
-          <h1 className={styles.title}>Join Financial Homie!</h1>
+          <h1 className={styles.title}>Join FinWise!</h1>
           <p className={styles.subtitle}>Create your account to start tracking</p>
 
           {error && <div className={styles.error}>{error}</div>}

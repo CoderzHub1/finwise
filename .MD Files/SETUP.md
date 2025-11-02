@@ -1,4 +1,4 @@
-# Financial Homie - Setup Instructions
+# FinWise - Setup Instructions
 
 A gamified financial tracking application built with Flask (Backend) and Next.js (Frontend).
 

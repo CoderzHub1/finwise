@@ -16,7 +16,7 @@ import styles from '@/styles/Dashboard.module.css';
 export default function Dashboard() {
   const { user, signout } = useAuth();
   const content = useTranslatedContent({
-    title: 'Dashboard - Financial Homie',
+    title: 'Dashboard - FinWise',
     loading: 'Loading your dashboard...'
   });
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>{content.title}</title>
+        <title>FinWise</title>
         <meta name="description" content="Your financial dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

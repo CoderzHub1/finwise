@@ -1,4 +1,4 @@
-# Financial Homie - Quick Start Guide
+# FinWise - Quick Start Guide
 
 ## 🚀 Quick Start (3 Steps)
 

@@ -66,7 +66,7 @@ export default function Suggestions() {
   return (
     <>
       <Head>
-        <title>AI Suggestions - Financial Homie</title>
+        <title>AI Suggestions - FinWise</title>
         <meta name="description" content="Get AI-powered financial suggestions" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
