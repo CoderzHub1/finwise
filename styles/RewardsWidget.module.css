@@ -328,6 +328,52 @@
   }
 }
 
+/* Achievement celebration styles */
+.celebrationAchievement {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  text-align: center;
+  animation: achievementSlide 0.5s ease-out;
+}
+
+@keyframes achievementSlide {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.achievementIcon {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  animation: achievementBounce 1s ease infinite;
+}
+
+@keyframes achievementBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.achievementName {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.achievementDesc {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 5px;
+}
+
 @media (max-width: 768px) {
   .widget {
     padding: 1rem;

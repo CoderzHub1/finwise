@@ -20,6 +20,7 @@ export default function RewardsWidget({ refreshTrigger }) {
   const [showCelebration, setShowCelebration] = useState(false);
   const [pointsGained, setPointsGained] = useState(0);
   const [transactionCount, setTransactionCount] = useState(0);
+  const [newAchievements, setNewAchievements] = useState([]);
   const intervalRef = useRef(null);
   const previousPointsRef = useRef(0);
 
@@ -100,6 +101,30 @@ export default function RewardsWidget({ refreshTrigger }) {
           console.log('No new bonuses to show');
         }
         
+        // Check for newly unlocked achievements
+        if (data.newly_unlocked_achievements && data.newly_unlocked_achievements.length > 0) {
+          const shownAchievements = JSON.parse(localStorage.getItem('shownAchievements') || '[]');
+          const newUnlocked = data.newly_unlocked_achievements.filter(
+            achievement => !shownAchievements.includes(achievement.id)
+          );
+          
+          if (newUnlocked.length > 0) {
+            console.log('🏆 New achievements unlocked!', newUnlocked);
+            setNewAchievements(newUnlocked);
+            setShowCelebration(true);
+            
+            // Mark achievements as shown
+            newUnlocked.forEach(achievement => shownAchievements.push(achievement.id));
+            localStorage.setItem('shownAchievements', JSON.stringify(shownAchievements));
+            
+            // Auto-dismiss after 7 seconds for achievements
+            setTimeout(() => {
+              setNewAchievements([]);
+              setShowCelebration(false);
+            }, 7000);
+          }
+        }
+        
         previousPointsRef.current = newPoints;
       }
     } catch (err) {
@@ -145,7 +170,19 @@ export default function RewardsWidget({ refreshTrigger }) {
       {showCelebration && (
         <div className={styles.celebrationOverlay}>
           <div className={styles.celebrationContent}>
-            {streakBonuses.length > 0 ? (
+            {newAchievements.length > 0 ? (
+              <>
+                <div className={styles.celebrationEmoji}>🏆</div>
+                <h2 className={styles.celebrationTitle}>Achievement Unlocked!</h2>
+                {newAchievements.map((achievement, index) => (
+                  <div key={index} className={styles.celebrationAchievement}>
+                    <div className={styles.achievementIcon}>{achievement.icon}</div>
+                    <div className={styles.achievementName}>{achievement.name}</div>
+                    <div className={styles.achievementDesc}>{achievement.description}</div>
+                  </div>
+                ))}
+              </>
+            ) : streakBonuses.length > 0 ? (
               <>
                 <div className={styles.celebrationEmoji}>🎉</div>
                 <h2 className={styles.celebrationTitle}>Amazing!</h2>

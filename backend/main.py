@@ -13,6 +13,105 @@ CORS(app)
 
 db = getdatabase("finwise")
 
+# Rank definitions
+RANKS = [
+    {"name": "Bronze Beginner", "icon": "🪙", "min_points": 0, "max_points": 499},
+    {"name": "Silver Saver", "icon": "💡", "min_points": 500, "max_points": 999},
+    {"name": "Gold Planner", "icon": "🏆", "min_points": 1000, "max_points": 1999},
+    {"name": "Platinum Financier", "icon": "💳", "min_points": 2000, "max_points": 3499},
+    {"name": "Diamond Investor", "icon": "💎", "min_points": 3500, "max_points": 5499},
+    {"name": "Elite Wealth Master", "icon": "👑", "min_points": 5500, "max_points": 7999},
+    {"name": "FinWise Legend", "icon": "🌟", "min_points": 8000, "max_points": float('inf')}
+]
+
+# Achievement definitions
+ACHIEVEMENTS = {
+    "streak_star": {
+        "id": "streak_star",
+        "name": "Streak Star",
+        "icon": "🔥",
+        "description": "Maintain spending limits for 4 consecutive weeks",
+        "requirement": 4
+    },
+    "budget_boss": {
+        "id": "budget_boss",
+        "name": "Budget Boss",
+        "icon": "💰",
+        "description": "Earn 100-point monthly bonus for 3 consecutive months",
+        "requirement": 3
+    },
+    "loan_legend": {
+        "id": "loan_legend",
+        "name": "Loan Legend",
+        "icon": "🏦",
+        "description": "Complete 5 timely loan repayments",
+        "requirement": 5
+    }
+}
+
+
+def get_user_rank(points: int):
+    """Calculate user's rank based on points"""
+    for rank in RANKS:
+        if rank["min_points"] <= points <= rank["max_points"]:
+            return rank
+    return RANKS[0]  # Default to Bronze Beginner
+
+
+def get_next_rank(points: int):
+    """Get the next rank the user can achieve"""
+    current_rank_index = 0
+    for i, rank in enumerate(RANKS):
+        if rank["min_points"] <= points <= rank["max_points"]:
+            current_rank_index = i
+            break
+    
+    if current_rank_index < len(RANKS) - 1:
+        return RANKS[current_rank_index + 1]
+    return None  # Already at max rank
+
+
+def check_achievement_unlock(username: str):
+    """Check if user has unlocked any new achievements"""
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return []
+    
+    current_achievements = user.get('achievements', [])
+    newly_unlocked = []
+    
+    # Check Streak Star (4 consecutive weeks)
+    if 'streak_star' not in current_achievements:
+        consecutive_weeks = user.get('consecutive_weekly_streaks', 0)
+        if consecutive_weeks >= ACHIEVEMENTS['streak_star']['requirement']:
+            current_achievements.append('streak_star')
+            newly_unlocked.append(ACHIEVEMENTS['streak_star'])
+    
+    # Check Budget Boss (3 consecutive months with 100-point bonus)
+    if 'budget_boss' not in current_achievements:
+        consecutive_months = user.get('consecutive_monthly_bonuses', 0)
+        if consecutive_months >= ACHIEVEMENTS['budget_boss']['requirement']:
+            current_achievements.append('budget_boss')
+            newly_unlocked.append(ACHIEVEMENTS['budget_boss'])
+    
+    # Check Loan Legend (5 timely loan repayments)
+    if 'loan_legend' not in current_achievements:
+        timely_repayments = user.get('timely_loan_repayments', 0)
+        if timely_repayments >= ACHIEVEMENTS['loan_legend']['requirement']:
+            current_achievements.append('loan_legend')
+            newly_unlocked.append(ACHIEVEMENTS['loan_legend'])
+    
+    # Update achievements in database
+    if newly_unlocked:
+        a.update_one(
+            {'username': username},
+            {'$set': {'achievements': current_achievements}}
+        )
+    
+    return newly_unlocked
+
 
 def award_points(username: str, points: int):
     """Award points to a user"""
@@ -24,7 +123,7 @@ def award_points(username: str, points: int):
 
 
 def award_transaction_points(username: str):
-    """Award points for transactions - only first 20 transactions get 10 points"""
+    """Award points for transactions - only first 5 transactions get 10 points"""
     a = db.get_collection("userInfo")
     user = a.find_one({'username': username})
     
@@ -40,8 +139,8 @@ def award_transaction_points(username: str):
         {'$inc': {'transaction_count': 1}}
     )
     
-    # Award 10 points only for first 20 transactions
-    if transaction_count < 20:
+    # Award 10 points only for first 5 transactions
+    if transaction_count < 5:
         award_points(username, 10)
         # Generate bonus_id for this transaction award
         import time
@@ -53,6 +152,52 @@ def award_transaction_points(username: str):
         return 10, bonus_id
     
     return 0, None
+
+
+def check_expense_limit_penalty(username: str, category: str, amount: float):
+    """Check if expense exceeds limit and return -30 penalty if limit exceeded"""
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return 0
+    
+    # Get user's limits
+    limits = user.get('limit', {})
+    if category not in limits:
+        return 0
+    
+    # Get all transactions to calculate current period income and expenses
+    b = db.get_collection(username)
+    transactions = list(b.find({}))
+    
+    # Calculate total income for current month
+    current_month_start = get_month_start()
+    total_income = 0
+    category_expenses = 0
+    
+    for trans in transactions:
+        try:
+            trans_date = datetime.strptime(trans.get('dateEntered', ''), '%Y-%m-%d').date()
+            if trans_date >= current_month_start:
+                if trans.get('type') == 'income':
+                    total_income += trans.get('amount', 0)
+                elif trans.get('type') == 'debit' and trans.get('category') == category:
+                    category_expenses += trans.get('amount', 0)
+        except:
+            continue
+    
+    # Check if limit exceeded with this new expense
+    if total_income > 0:
+        limit_percentage = limits[category]
+        limit_amount = (limit_percentage / 100) * total_income
+        
+        if category_expenses > limit_amount:
+            # Apply -30 penalty
+            award_points(username, -30)
+            return -30
+    
+    return 0
 
 
 def get_week_start(date_obj=None):
@@ -128,16 +273,25 @@ def check_weekly_streak(username: str):
     # Award points if no limit exceeded
     if not limit_exceeded and (weekly_expenses or total_income > 0):
         award_points(username, 25)
+        
+        # Increment consecutive weekly streaks for Streak Star achievement
+        consecutive_weeks = user.get('consecutive_weekly_streaks', 0) + 1
         a.update_one(
             {'username': username},
-            {'$set': {'last_weekly_check': str(current_monday)}}
+            {'$set': {
+                'last_weekly_check': str(current_monday),
+                'consecutive_weekly_streaks': consecutive_weeks
+            }}
         )
         return True
     
-    # Update last check date even if limit exceeded
+    # Reset consecutive weeks if limit exceeded
     a.update_one(
         {'username': username},
-        {'$set': {'last_weekly_check': str(current_monday)}}
+        {'$set': {
+            'last_weekly_check': str(current_monday),
+            'consecutive_weekly_streaks': 0
+        }}
     )
     return False
 
@@ -203,9 +357,19 @@ def check_monthly_streak(username: str):
     if total_limits > 0:
         points = int(100 * (total_limits - exceeded_count) / total_limits)
         award_points(username, points)
+        
+        # Track consecutive months with 100-point bonus for Budget Boss achievement
+        if points == 100:
+            consecutive_months = user.get('consecutive_monthly_bonuses', 0) + 1
+        else:
+            consecutive_months = 0
+        
         a.update_one(
             {'username': username},
-            {'$set': {'last_monthly_check': str(current_month_start)}}
+            {'$set': {
+                'last_monthly_check': str(current_month_start),
+                'consecutive_monthly_bonuses': consecutive_months
+            }}
         )
         return points
     
@@ -289,6 +453,29 @@ def add_user():
                 "last_bonus_id": {
                 "bsonType": "string",
                 "description": "unique ID of last awarded bonus to prevent duplicate celebrations"
+                },
+                "achievements": {
+                "bsonType": "array",
+                "description": "list of unlocked achievement IDs"
+                },
+                "achievement_progress": {
+                "bsonType": "object",
+                "description": "tracks progress towards achievements"
+                },
+                "consecutive_monthly_bonuses": {
+                "bsonType": "int",
+                "minimum": 0,
+                "description": "count of consecutive months with 100-point bonus (for Budget Boss)"
+                },
+                "consecutive_weekly_streaks": {
+                "bsonType": "int",
+                "minimum": 0,
+                "description": "count of consecutive weekly streaks (for Streak Star)"
+                },
+                "timely_loan_repayments": {
+                "bsonType": "int",
+                "minimum": 0,
+                "description": "count of timely loan repayments (for Loan Legend)"
                 }
             }
             }
@@ -333,7 +520,16 @@ def add_user():
             "last_weekly_check": None,
             "last_monthly_check": None,
             "transaction_count": 0,
-            "last_bonus_id": None
+            "last_bonus_id": None,
+            "achievements": [],
+            "achievement_progress": {
+                "streak_star_weeks": 0,
+                "budget_boss_months": 0,
+                "loan_legend_count": 0
+            },
+            "consecutive_monthly_bonuses": 0,
+            "consecutive_weekly_streaks": 0,
+            "timely_loan_repayments": 0
         })
         db.create_collection(req['username'])
         return jsonify({'msg': "user inserted"})
@@ -352,14 +548,52 @@ def add_transaction():
         if bcrypt.checkpw(pw.encode('utf-8'), user['password'].encode('utf-8')):
             b = db.get_collection(username)
             date = str(datetime.now().date())
+            amount = req['amount']
+            category = req['category']
+            
+            # Get transaction count BEFORE any operations
+            transaction_count = user.get('transaction_count', 0)
+            
+            # Insert transaction
             b.insert_one({
                 "dateEntered": date,
-                "amount": req['amount'],
+                "amount": amount,
                 "type": "debit",
-                "category": req['category']
+                "category": category
             })
-            # Award points for transaction (only first 20 transactions)
-            points_awarded, bonus_id = award_transaction_points(username)
+            
+            # Increment transaction count first
+            a.update_one(
+                {'username': username},
+                {'$inc': {'transaction_count': 1}}
+            )
+            
+            # Always check if expense exceeds limit
+            penalty = check_expense_limit_penalty(username, category, amount)
+            
+            points_awarded = 0
+            bonus_id = None
+            
+            if penalty < 0:
+                # Apply penalty whenever limit is exceeded
+                points_awarded = penalty
+                import time
+                bonus_id = f"penalty_{transaction_count + 1}_{int(time.time())}"
+                a.update_one(
+                    {'username': username},
+                    {'$set': {'last_transaction_bonus_id': bonus_id}}
+                )
+            elif transaction_count < 5:
+                # Award +10 points only for first 5 transactions
+                award_points(username, 10)
+                points_awarded = 10
+                import time
+                bonus_id = f"transaction_{transaction_count + 1}_{int(time.time())}"
+                a.update_one(
+                    {'username': username},
+                    {'$set': {'last_transaction_bonus_id': bonus_id}}
+                )
+            
             # Check weekly streak
             check_weekly_streak(username)
             return jsonify({'msg': "Transaction added successfully", 'points_awarded': points_awarded})
@@ -379,14 +613,37 @@ def add_income():
         if bcrypt.checkpw(pw.encode('utf-8'), user['password'].encode('utf-8')):
             b = db.get_collection(username)
             date = str(datetime.now().date())
+            
+            # Get transaction count BEFORE any operations
+            transaction_count = user.get('transaction_count', 0)
+            
             b.insert_one({
                 "dateEntered": date,
                 "amount": req['amount'],
                 "type": "income",
                 "source": req['source']
             })
-            # Award points for income (only first 20 transactions)
-            points_awarded, bonus_id = award_transaction_points(username)
+            
+            # Increment transaction count
+            a.update_one(
+                {'username': username},
+                {'$inc': {'transaction_count': 1}}
+            )
+            
+            # Award points for income (only first 5 transactions)
+            points_awarded = 0
+            bonus_id = None
+            
+            if transaction_count < 5:
+                award_points(username, 10)
+                points_awarded = 10
+                import time
+                bonus_id = f"transaction_{transaction_count + 1}_{int(time.time())}"
+                a.update_one(
+                    {'username': username},
+                    {'$set': {'last_transaction_bonus_id': bonus_id}}
+                )
+            
             # Check weekly streak
             check_weekly_streak(username)
             return jsonify({'msg': "Income added successfully", 'points_awarded': points_awarded})
@@ -404,14 +661,37 @@ def add_loan_taken():
         if bcrypt.checkpw(pw.encode('utf-8'), user['password'].encode('utf-8')):
             b = db.get_collection(username)
             date = str(datetime.now().date())
+            
+            # Get transaction count BEFORE any operations
+            transaction_count = user.get('transaction_count', 0)
+            
             b.insert_one({
                 "dateEntered": date,
                 "amount": req['amount'],
                 "type": "loanTaken",
                 "lender": req['lender']
             })
-            # Award points for loan (only first 20 transactions)
-            points_awarded, bonus_id = award_transaction_points(username)
+            
+            # Increment transaction count
+            a.update_one(
+                {'username': username},
+                {'$inc': {'transaction_count': 1}}
+            )
+            
+            # Award points for loan (only first 5 transactions)
+            points_awarded = 0
+            bonus_id = None
+            
+            if transaction_count < 5:
+                award_points(username, 10)
+                points_awarded = 10
+                import time
+                bonus_id = f"transaction_{transaction_count + 1}_{int(time.time())}"
+                a.update_one(
+                    {'username': username},
+                    {'$set': {'last_transaction_bonus_id': bonus_id}}
+                )
+            
             return jsonify({'msg': "Loan taken added successfully", 'points_awarded': points_awarded})
         else:
             return jsonify({'error': "Password entered is incorrect"})
@@ -427,6 +707,10 @@ def add_loan_repayment():
         if bcrypt.checkpw(pw.encode('utf-8'), user['password'].encode('utf-8')):
             b = db.get_collection(username)
             date = str(datetime.now().date())
+            
+            # Get transaction count BEFORE any operations
+            transaction_count = user.get('transaction_count', 0)
+            
             b.insert_one({
                 "dateEntered": date,
                 "amount": req['amount'],
@@ -434,11 +718,38 @@ def add_loan_repayment():
                 "lender": req['lender'],
                 "is_paid_on_time": req['is_paid_on_time']
             })
-            # Award points: transaction points (first 20 only) + 50 bonus for timely payment
-            points_awarded, bonus_id = award_transaction_points(username)
+            
+            # Increment transaction count
+            a.update_one(
+                {'username': username},
+                {'$inc': {'transaction_count': 1}}
+            )
+            
+            # Award points: transaction points (first 5 only) + 50 bonus for timely payment
+            points_awarded = 0
+            bonus_id = None
+            
+            if transaction_count < 5:
+                award_points(username, 10)
+                points_awarded = 10
+                import time
+                bonus_id = f"transaction_{transaction_count + 1}_{int(time.time())}"
+                a.update_one(
+                    {'username': username},
+                    {'$set': {'last_transaction_bonus_id': bonus_id}}
+                )
+            
+            # Always award 50 points for timely payment
             if req.get('is_paid_on_time', False):
                 award_points(username, 50)
                 points_awarded += 50
+                
+                # Track timely repayments for Loan Legend achievement
+                a.update_one(
+                    {'username': username},
+                    {'$inc': {'timely_loan_repayments': 1}}
+                )
+            
             return jsonify({'msg': "Loan repayment added successfully", 'points_awarded': points_awarded})
         else:
             return jsonify({'error': "Password entered is incorrect"})
@@ -1006,6 +1317,9 @@ def get_rewards():
     weekly_awarded = check_weekly_streak(username)
     monthly_points = check_monthly_streak(username)
     
+    # Check for newly unlocked achievements
+    newly_unlocked = check_achievement_unlock(username)
+    
     # Get updated user data
     user = a.find_one({'username': username})
     
@@ -1038,12 +1352,12 @@ def get_rewards():
         last_shown_transaction_bonus = user.get('last_shown_transaction_bonus_id')
         if last_transaction_bonus_id != last_shown_transaction_bonus:
             transaction_count = user.get('transaction_count', 0)
-            if transaction_count <= 20:  # Only show for first 20
+            if transaction_count <= 5:  # Only show for first 5
                 bonus_id = last_transaction_bonus_id
                 streak_bonuses.append({
                     'type': 'transaction',
                     'points': 10,
-                    'message': f'💰 Transaction Bonus! ({transaction_count}/20)'
+                    'message': f'💰 Transaction Bonus! ({transaction_count}/5)'
                 })
                 # Mark this transaction bonus as shown
                 a.update_one(
@@ -1073,7 +1387,8 @@ def get_rewards():
         'last_monthly_check': user.get('last_monthly_check'),
         'streak_bonuses': streak_bonuses,
         'has_new_bonuses': is_new_bonus,
-        'bonus_id': bonus_id
+        'bonus_id': bonus_id,
+        'newly_unlocked_achievements': newly_unlocked
     }), 200
 
 
@@ -1104,6 +1419,95 @@ def check_streaks():
         'weekly_bonus': 25 if weekly_awarded else 0,
         'monthly_bonus': monthly_points,
         'total_bonus': (25 if weekly_awarded else 0) + monthly_points
+    }), 200
+
+
+@app.route("/get-rank-and-achievements", methods=["POST"])
+def get_rank_and_achievements():
+    """Get user's current rank and achievements with progress"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    
+    if not username or not password:
+        return jsonify({'error': 'Username and password required'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Invalid credentials'}), 401
+    
+    # Check for newly unlocked achievements
+    newly_unlocked = check_achievement_unlock(username)
+    
+    # Refresh user data after achievement check
+    user = a.find_one({'username': username})
+    
+    # Get current rank
+    points = user.get('reward_points', 0)
+    current_rank = get_user_rank(points)
+    next_rank = get_next_rank(points)
+    
+    # Calculate progress to next rank
+    progress_percentage = 0
+    points_to_next = 0
+    if next_rank:
+        points_in_current_rank = points - current_rank['min_points']
+        total_points_for_rank = next_rank['min_points'] - current_rank['min_points']
+        progress_percentage = int((points_in_current_rank / total_points_for_rank) * 100)
+        points_to_next = next_rank['min_points'] - points
+    
+    # Get achievements and their progress
+    unlocked_achievements = user.get('achievements', [])
+    achievements_data = []
+    
+    for achievement_id, achievement in ACHIEVEMENTS.items():
+        is_unlocked = achievement_id in unlocked_achievements
+        progress = 0
+        current_value = 0
+        
+        if achievement_id == 'streak_star':
+            current_value = user.get('consecutive_weekly_streaks', 0)
+            progress = min(100, int((current_value / achievement['requirement']) * 100))
+        elif achievement_id == 'budget_boss':
+            current_value = user.get('consecutive_monthly_bonuses', 0)
+            progress = min(100, int((current_value / achievement['requirement']) * 100))
+        elif achievement_id == 'loan_legend':
+            current_value = user.get('timely_loan_repayments', 0)
+            progress = min(100, int((current_value / achievement['requirement']) * 100))
+        
+        achievements_data.append({
+            'id': achievement_id,
+            'name': achievement['name'],
+            'icon': achievement['icon'],
+            'description': achievement['description'],
+            'unlocked': is_unlocked,
+            'progress': progress,
+            'current': current_value,
+            'required': achievement['requirement']
+        })
+    
+    return jsonify({
+        'rank': {
+            'name': current_rank['name'],
+            'icon': current_rank['icon'],
+            'min_points': current_rank['min_points'],
+            'max_points': current_rank['max_points'],
+            'current_points': points
+        },
+        'next_rank': {
+            'name': next_rank['name'],
+            'icon': next_rank['icon'],
+            'min_points': next_rank['min_points'],
+            'points_to_next': points_to_next,
+            'progress_percentage': progress_percentage
+        } if next_rank else None,
+        'achievements': achievements_data,
+        'newly_unlocked': newly_unlocked
     }), 200
 
 

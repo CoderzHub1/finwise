@@ -3,12 +3,15 @@ import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
 import Head from 'next/head';
 import Navbar from '@/components/Navbar';
+import RankDisplay from '@/components/RankDisplay';
+import AchievementBadges from '@/components/AchievementBadges';
 import styles from '@/styles/Rewards.module.css';
 
 export default function Rewards() {
   const { user } = useAuth();
   const router = useRouter();
   const [rewardsData, setRewardsData] = useState(null);
+  const [rankData, setRankData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -51,7 +54,36 @@ export default function Rewards() {
     }
   };
 
+  const fetchRankAndAchievements = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/get-rank-and-achievements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: user.username,
+          password: user.password,
+        }),
+      });
 
+      const data = await response.json();
+
+      if (response.ok) {
+        setRankData(data);
+      } else {
+        console.error('Failed to fetch rank and achievements:', data.error);
+      }
+    } catch (err) {
+      console.error('Error fetching rank and achievements:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (user && rewardsData) {
+      fetchRankAndAchievements();
+    }
+  }, [user, rewardsData]);
 
   if (!user) {
     return null;
@@ -117,6 +149,14 @@ export default function Rewards() {
                     </div>
                   </div>
                 </div>
+
+                {/* Rank Display */}
+                {rankData && <RankDisplay rankData={rankData} />}
+
+                {/* Achievement Badges */}
+                {rankData && rankData.achievements && (
+                  <AchievementBadges achievements={rankData.achievements} />
+                )}
 
                 {rewardsData.has_new_bonuses && rewardsData.streak_bonuses && (
                   <div className={styles.bonusAlert}>
