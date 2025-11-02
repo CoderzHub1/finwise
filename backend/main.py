@@ -1629,5 +1629,435 @@ def get_languages():
         return jsonify({'error': str(e)}), 500
 
 
+# ==================== FRIEND REQUEST & EXPENSE SPLITTING ENDPOINTS ====================
+
+@app.route("/send-friend-request", methods=["POST"])
+def send_friend_request():
+    """Send a friend request to another user"""
+    req = request.get_json()
+    sender_username = req.get('username')
+    password = req.get('password')
+    recipient_username = req.get('recipient_username')
+    
+    if not sender_username or not password or not recipient_username:
+        return jsonify({'error': 'username, password, and recipient_username are required'}), 400
+    
+    if sender_username == recipient_username:
+        return jsonify({'error': 'Cannot send friend request to yourself'}), 400
+    
+    a = db.get_collection("userInfo")
+    sender = a.find_one({'username': sender_username})
+    
+    if not sender:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), sender['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    # Check if recipient exists
+    recipient = a.find_one({'username': recipient_username})
+    if not recipient:
+        return jsonify({'error': 'Recipient username does not exist'}), 404
+    
+    # Check if already friends
+    sender_friends = sender.get('friends', [])
+    if recipient_username in sender_friends:
+        return jsonify({'error': 'Already friends with this user'}), 400
+    
+    # Check if request already exists
+    friend_requests = db.get_collection("friendRequests")
+    existing_request = friend_requests.find_one({
+        'sender': sender_username,
+        'recipient': recipient_username,
+        'status': 'pending'
+    })
+    
+    if existing_request:
+        return jsonify({'error': 'Friend request already sent'}), 400
+    
+    # Create friend request
+    try:
+        friend_requests.insert_one({
+            'sender': sender_username,
+            'recipient': recipient_username,
+            'status': 'pending',
+            'dateCreated': str(datetime.now().date()),
+            'timeCreated': str(datetime.now().time())
+        })
+        
+        return jsonify({'msg': 'Friend request sent successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': f'Failed to send friend request: {str(e)}'}), 500
+
+
+@app.route("/get-friend-requests", methods=["POST"])
+def get_friend_requests():
+    """Get all pending friend requests for a user"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    
+    if not username or not password:
+        return jsonify({'error': 'username and password are required'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    friend_requests = db.get_collection("friendRequests")
+    
+    # Get received requests
+    received_requests = list(friend_requests.find({
+        'recipient': username,
+        'status': 'pending'
+    }, {'_id': False}))
+    
+    # Get sent requests
+    sent_requests = list(friend_requests.find({
+        'sender': username,
+        'status': 'pending'
+    }, {'_id': False}))
+    
+    return jsonify({
+        'received': received_requests,
+        'sent': sent_requests
+    }), 200
+
+
+@app.route("/respond-friend-request", methods=["POST"])
+def respond_friend_request():
+    """Approve or decline a friend request"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    sender_username = req.get('sender_username')
+    action = req.get('action')  # 'approve' or 'decline'
+    
+    if not username or not password or not sender_username or not action:
+        return jsonify({'error': 'username, password, sender_username, and action are required'}), 400
+    
+    if action not in ['approve', 'decline']:
+        return jsonify({'error': 'action must be "approve" or "decline"'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    friend_requests = db.get_collection("friendRequests")
+    
+    # Find the friend request
+    friend_request = friend_requests.find_one({
+        'sender': sender_username,
+        'recipient': username,
+        'status': 'pending'
+    })
+    
+    if not friend_request:
+        return jsonify({'error': 'Friend request not found'}), 404
+    
+    try:
+        if action == 'approve':
+            # Add each other to friends list
+            a.update_one(
+                {'username': username},
+                {'$addToSet': {'friends': sender_username}}
+            )
+            a.update_one(
+                {'username': sender_username},
+                {'$addToSet': {'friends': username}}
+            )
+            
+            # Update request status
+            friend_requests.update_one(
+                {'sender': sender_username, 'recipient': username, 'status': 'pending'},
+                {'$set': {'status': 'approved'}}
+            )
+            
+            return jsonify({'msg': 'Friend request approved'}), 200
+        else:
+            # Update request status
+            friend_requests.update_one(
+                {'sender': sender_username, 'recipient': username, 'status': 'pending'},
+                {'$set': {'status': 'declined'}}
+            )
+            
+            return jsonify({'msg': 'Friend request declined'}), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to respond to friend request: {str(e)}'}), 500
+
+
+@app.route("/get-friends", methods=["POST"])
+def get_friends():
+    """Get all friends for a user"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    
+    if not username or not password:
+        return jsonify({'error': 'username and password are required'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    friends = user.get('friends', [])
+    
+    return jsonify({'friends': friends}), 200
+
+
+@app.route("/remove-friend", methods=["POST"])
+def remove_friend():
+    """Remove a friend from user's friend list"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    friend_username = req.get('friend_username')
+    
+    if not username or not password or not friend_username:
+        return jsonify({'error': 'username, password, and friend_username are required'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    try:
+        # Remove from both users' friend lists
+        a.update_one(
+            {'username': username},
+            {'$pull': {'friends': friend_username}}
+        )
+        a.update_one(
+            {'username': friend_username},
+            {'$pull': {'friends': username}}
+        )
+        
+        return jsonify({'msg': 'Friend removed successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to remove friend: {str(e)}'}), 500
+
+
+@app.route("/create-split-expense", methods=["POST"])
+def create_split_expense():
+    """Create a new split expense with friends"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    amount = req.get('amount')
+    description = req.get('description', '')
+    split_with = req.get('split_with', [])  # List of friend usernames
+    
+    if not username or not password or not amount:
+        return jsonify({'error': 'username, password, and amount are required'}), 400
+    
+    try:
+        amount = float(amount)
+        if amount <= 0:
+            return jsonify({'error': 'amount must be greater than 0'}), 400
+    except (ValueError, TypeError):
+        return jsonify({'error': 'amount must be a valid number'}), 400
+    
+    if not split_with or not isinstance(split_with, list):
+        return jsonify({'error': 'split_with must be a non-empty array'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    # Verify all users in split_with are friends
+    user_friends = user.get('friends', [])
+    for friend in split_with:
+        if friend not in user_friends:
+            return jsonify({'error': f'{friend} is not in your friends list'}), 400
+    
+    # Calculate split amount per person (including the creator)
+    total_people = len(split_with) + 1  # +1 for the creator
+    amount_per_person = round(amount / total_people, 2)
+    
+    # Create split balances
+    balances = {}
+    for friend in split_with:
+        balances[friend] = amount_per_person  # They owe the creator
+    
+    try:
+        split_expenses = db.get_collection("splitExpenses")
+        
+        # Get next expense ID
+        last_expense = split_expenses.find_one(sort=[("expense_id", -1)])
+        next_expense_id = (last_expense.get("expense_id", 0) if last_expense else 0) + 1
+        
+        date = str(datetime.now().date())
+        
+        # Add split expense to creator's transaction history
+        creator_collection = db.get_collection(username)
+        creator_collection.insert_one({
+            "dateEntered": date,
+            "amount": amount_per_person,
+            "type": "debit",
+            "category": "Split Expense",
+            "description": f"Split: {description}" if description else "Split Expense",
+            "split_expense_id": next_expense_id
+        })
+        
+        # Add split expense to each friend's transaction history
+        for friend in split_with:
+            friend_collection = db.get_collection(friend)
+            friend_collection.insert_one({
+                "dateEntered": date,
+                "amount": amount_per_person,
+                "type": "debit",
+                "category": "Split Expense",
+                "description": f"Split: {description}" if description else "Split Expense",
+                "split_expense_id": next_expense_id,
+                "split_with": username
+            })
+        
+        expense = {
+            'expense_id': next_expense_id,
+            'created_by': username,
+            'amount': amount,
+            'description': description,
+            'split_with': split_with,
+            'total_people': total_people,
+            'amount_per_person': amount_per_person,
+            'balances': balances,  # {username: amount_owed}
+            'settled': False,
+            'dateCreated': date,
+            'timeCreated': str(datetime.now().time())
+        }
+        
+        split_expenses.insert_one(expense)
+        
+        return jsonify({
+            'msg': 'Split expense created successfully',
+            'expense_id': next_expense_id,
+            'amount_per_person': amount_per_person
+        }), 201
+    except Exception as e:
+        return jsonify({'error': f'Failed to create split expense: {str(e)}'}), 500
+
+
+@app.route("/get-split-expenses", methods=["POST"])
+def get_split_expenses():
+    """Get all split expenses for a user (created by them or split with them)"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    
+    if not username or not password:
+        return jsonify({'error': 'username and password are required'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    split_expenses = db.get_collection("splitExpenses")
+    
+    # Get expenses created by user
+    created_expenses = list(split_expenses.find({'created_by': username}, {'_id': False}))
+    
+    # Get expenses user is part of
+    involved_expenses = list(split_expenses.find({'split_with': username}, {'_id': False}))
+    
+    # Calculate summary balances
+    you_owe = {}  # {friend: total_amount_you_owe}
+    owed_to_you = {}  # {friend: total_amount_owed_to_you}
+    
+    # From expenses you created
+    for expense in created_expenses:
+        if not expense.get('settled', False):
+            for friend, amount in expense.get('balances', {}).items():
+                owed_to_you[friend] = owed_to_you.get(friend, 0) + amount
+    
+    # From expenses you're part of
+    for expense in involved_expenses:
+        if not expense.get('settled', False):
+            creator = expense.get('created_by')
+            amount = expense.get('balances', {}).get(username, 0)
+            you_owe[creator] = you_owe.get(creator, 0) + amount
+    
+    return jsonify({
+        'created_expenses': created_expenses,
+        'involved_expenses': involved_expenses,
+        'you_owe': you_owe,
+        'owed_to_you': owed_to_you
+    }), 200
+
+
+@app.route("/settle-expense", methods=["POST"])
+def settle_expense():
+    """Mark an expense as settled"""
+    req = request.get_json()
+    username = req.get('username')
+    password = req.get('password')
+    expense_id = req.get('expense_id')
+    
+    if not username or not password or expense_id is None:
+        return jsonify({'error': 'username, password, and expense_id are required'}), 400
+    
+    try:
+        expense_id = int(expense_id)
+    except (ValueError, TypeError):
+        return jsonify({'error': 'expense_id must be a valid integer'}), 400
+    
+    a = db.get_collection("userInfo")
+    user = a.find_one({'username': username})
+    
+    if not user:
+        return jsonify({'error': 'Username does not exist'}), 404
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        return jsonify({'error': 'Password entered is incorrect'}), 401
+    
+    split_expenses = db.get_collection("splitExpenses")
+    expense = split_expenses.find_one({'expense_id': expense_id})
+    
+    if not expense:
+        return jsonify({'error': 'Expense not found'}), 404
+    
+    # Only the creator can mark as settled
+    if expense.get('created_by') != username:
+        return jsonify({'error': 'Only the expense creator can settle this expense'}), 403
+    
+    try:
+        split_expenses.update_one(
+            {'expense_id': expense_id},
+            {'$set': {'settled': True, 'dateSettled': str(datetime.now().date())}}
+        )
+        
+        return jsonify({'msg': 'Expense marked as settled'}), 200
+    except Exception as e:
+        return jsonify({'error': f'Failed to settle expense: {str(e)}'}), 500
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

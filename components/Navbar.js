@@ -14,6 +14,7 @@ export default function Navbar({ currentPage = '' }) {
     aiSuggestions: 'AI Suggestions',
     financeNews: 'Finance News',
     financeHub: 'FinanceHub',
+    splitExpenses: 'Split Expenses',
     myAccount: 'My Account',
     welcomeBack: 'Welcome back',
     signOut: 'Sign Out'
@@ -31,6 +32,7 @@ export default function Navbar({ currentPage = '' }) {
     { label: content.aiSuggestions, path: '/suggestions' },
     { label: content.financeNews, path: '/news' },
     { label: content.financeHub, path: '/community' },
+    { label: content.splitExpenses, path: '/split-expenses' },
     { label: content.myAccount, path: '/myAccount' },
   ];
 
