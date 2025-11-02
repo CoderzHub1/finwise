@@ -30,10 +30,6 @@ Finwise is a web application built with Next.js and Python. The frontend provide
 4. **Access the app:**
 	- Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Demo Link
-- [Live Demo](#) *(Add link if deployed)*
-- [Video Demo](#) *(Add link if available)*
-
 ## Limitations
 - Some features (e.g., advanced analytics, multi-language support) are in early stages and may require further refinement.
 - API rate limits and connectivity issues may affect news and translation services.
