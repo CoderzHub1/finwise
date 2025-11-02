@@ -1,40 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-## Getting Started
+# Finwise
 
-First, run the development server:
+## Problem
+Managing personal finances can be overwhelming, especially for individuals who lack financial literacy or motivation. Many people struggle to track expenses, set savings goals, and stay informed about financial news, which can lead to poor financial decisions and missed opportunities. Finwise aims to make personal finance management engaging and accessible by combining gamification, analytics, and curated news updates.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Plan
+Finwise is a web application built with Next.js and Python. The frontend provides interactive forms for tracking income, expenses, loans, and rewards, along with gamified visualizations to motivate users. The backend integrates with external APIs (such as NewsAPI and translation services) to deliver relevant financial news and support multilingual content. User authentication and analytics tracking are included to personalize the experience and monitor progress.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run Steps
+1. **Install dependencies:**
+	```bash
+	npm install
+	# or
+	yarn install
+	```
+2. **Start the development server:**
+	```bash
+	npm run dev
+	# or
+	yarn dev
+	```
+3. **Backend setup:**
+	- Ensure Python 3.x is installed.
+	- Install backend dependencies:
+	  ```bash
+	  pip install -r backend/requirements.txt
+	  ```
+	- Run backend services as needed (see backend/README.md for details).
+4. **Access the app:**
+	- Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Demo Link
+- [Live Demo](#) *(Add link if deployed)*
+- [Video Demo](#) *(Add link if available)*
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Limitations
+- Some features (e.g., advanced analytics, multi-language support) are in early stages and may require further refinement.
+- API rate limits and connectivity issues may affect news and translation services.
+- UI/UX can be improved for better accessibility and engagement.
+- Future work includes expanding gamification, adding budgeting tools, and deploying a stable live version.
