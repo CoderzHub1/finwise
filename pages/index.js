@@ -1,11 +1,17 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import Head from "next/head";
 
 export default function Home() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const content = useTranslatedContent({
+    title: 'Financial Homie',
+    description: 'Track your finances with gamification',
+    loading: 'Loading...'
+  });
 
   useEffect(() => {
     if (!loading) {
@@ -20,8 +26,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Financial Homie</title>
-        <meta name="description" content="Track your finances with gamification" />
+        <title>{content.title}</title>
+        <meta name="description" content={content.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -43,7 +49,7 @@ export default function Home() {
             animation: 'spin 1s linear infinite',
             margin: '0 auto'
           }}></div>
-          <p style={{ marginTop: '20px', fontSize: '1.2rem' }}>Loading...</p>
+          <p style={{ marginTop: '20px', fontSize: '1.2rem' }}>{content.loading}</p>
         </div>
       </div>
     </>

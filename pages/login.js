@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '@/styles/Auth.module.css';
@@ -12,6 +13,18 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { signin } = useAuth();
   const router = useRouter();
+  const content = useTranslatedContent({
+    title: 'Welcome Back!',
+    subtitle: 'Login to continue tracking your finances',
+    identifierLabel: 'Username or Email',
+    passwordLabel: 'Password',
+    loginButton: 'Login',
+    loggingIn: 'Logging in...',
+    noAccount: "Don't have an account?",
+    signUpLink: 'Sign up here',
+    pageTitle: 'Login - Financial Homie',
+    pageDescription: 'Login to your account'
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,22 +44,22 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login - Financial Homie</title>
-        <meta name="description" content="Login to your account" />
+        <title>{content.pageTitle}</title>
+        <meta name="description" content={content.pageDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className={styles.container}>
         <div className={styles.formCard}>
-          <h1 className={styles.title}>Welcome Back!</h1>
-          <p className={styles.subtitle}>Login to continue tracking your finances</p>
+          <h1 className={styles.title}>{content.title}</h1>
+          <p className={styles.subtitle}>{content.subtitle}</p>
 
           {error && <div className={styles.error}>{error}</div>}
 
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
-              <label htmlFor="identifier">Username or Email</label>
+              <label htmlFor="identifier">{content.identifierLabel}</label>
               <input
                 id="identifier"
                 type="text"
@@ -59,7 +72,7 @@ export default function Login() {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{content.passwordLabel}</label>
               <input
                 id="password"
                 type="password"
@@ -76,12 +89,12 @@ export default function Login() {
               disabled={loading}
               className={styles.submitBtn}
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? content.loggingIn : content.loginButton}
             </button>
           </form>
 
           <p className={styles.switchAuth}>
-            Don't have an account? <Link href="/signup">Sign up here</Link>
+            {content.noAccount} <Link href="/signup">{content.signUpLink}</Link>
           </p>
         </div>
       </div>

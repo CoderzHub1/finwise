@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from '@/context/TranslationContext';
 import Head from 'next/head';
 import Navbar from '@/components/Navbar';
+import LanguageSelector from '@/components/LanguageSelector';
 import axios from 'axios';
 import styles from '@/styles/MyAccount.module.css';
 
 export default function MyAccount() {
   const { user, signout } = useAuth();
+  const { translate, currentLanguage } = useTranslation();
   const router = useRouter();
   const [limits, setLimits] = useState({});
   const [loading, setLoading] = useState(true);
@@ -17,6 +20,34 @@ export default function MyAccount() {
   const [newCategoryLimit, setNewCategoryLimit] = useState(5);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showAddCategory, setShowAddCategory] = useState(false);
+  const [translatedContent, setTranslatedContent] = useState({
+    title: 'My Account',
+    subtitle: 'Manage your spending categories and limits',
+    spendingLimits: 'Spending Limits',
+    editLimits: 'Edit Limits',
+    cancel: 'Cancel',
+    saveChanges: 'Save Changes',
+    addCategory: 'Add Category',
+    cancelAdd: 'Cancel Add',
+    categoryName: 'Category Name',
+    limitPercent: 'Limit %',
+    add: 'Add',
+    noCategories: 'No spending categories yet. Add your first category!',
+    totalAllocation: 'Total Allocation:',
+    warningExceeds: '⚠️ Total exceeds 100%. Consider adjusting your limits.',
+    infoUnallocated: '💡 You have',
+    unallocated: 'unallocated.',
+    deleteConfirm: 'Are you sure you want to delete the category',
+    loadingAccount: 'Loading your account...',
+    limitsUpdated: 'Limits updated successfully!',
+    categoryAdded: 'added successfully!',
+    categoryDeleted: 'deleted successfully!',
+    enterCategoryName: 'Please enter a category name',
+    failedToLoad: 'Failed to load your limits',
+    failedToUpdate: 'Failed to update limits',
+    failedToAdd: 'Failed to add category',
+    failedToDelete: 'Failed to delete category'
+  });
 
   useEffect(() => {
     if (!user) {
@@ -25,6 +56,104 @@ export default function MyAccount() {
       fetchUserLimits();
     }
   }, [user]);
+
+  // Translate UI content when language changes
+  useEffect(() => {
+    const translateUI = async () => {
+      if (currentLanguage === 'en') {
+        // Reset to English
+        setTranslatedContent({
+          title: 'My Account',
+          subtitle: 'Manage your spending categories and limits',
+          spendingLimits: 'Spending Limits',
+          editLimits: 'Edit Limits',
+          cancel: 'Cancel',
+          saveChanges: 'Save Changes',
+          addCategory: 'Add Category',
+          cancelAdd: 'Cancel Add',
+          categoryName: 'Category Name',
+          limitPercent: 'Limit %',
+          add: 'Add',
+          noCategories: 'No spending categories yet. Add your first category!',
+          totalAllocation: 'Total Allocation:',
+          warningExceeds: '⚠️ Total exceeds 100%. Consider adjusting your limits.',
+          infoUnallocated: '💡 You have',
+          unallocated: 'unallocated.',
+          deleteConfirm: 'Are you sure you want to delete the category',
+          loadingAccount: 'Loading your account...',
+          limitsUpdated: 'Limits updated successfully!',
+          categoryAdded: 'added successfully!',
+          categoryDeleted: 'deleted successfully!',
+          enterCategoryName: 'Please enter a category name',
+          failedToLoad: 'Failed to load your limits',
+          failedToUpdate: 'Failed to update limits',
+          failedToAdd: 'Failed to add category',
+          failedToDelete: 'Failed to delete category'
+        });
+      } else {
+        // Translate all UI strings
+        const translations = await Promise.all([
+          translate('My Account'),
+          translate('Manage your spending categories and limits'),
+          translate('Spending Limits'),
+          translate('Edit Limits'),
+          translate('Cancel'),
+          translate('Save Changes'),
+          translate('Add Category'),
+          translate('Cancel Add'),
+          translate('Category Name'),
+          translate('Limit %'),
+          translate('Add'),
+          translate('No spending categories yet. Add your first category!'),
+          translate('Total Allocation:'),
+          translate('⚠️ Total exceeds 100%. Consider adjusting your limits.'),
+          translate('💡 You have'),
+          translate('unallocated.'),
+          translate('Are you sure you want to delete the category'),
+          translate('Loading your account...'),
+          translate('Limits updated successfully!'),
+          translate('added successfully!'),
+          translate('deleted successfully!'),
+          translate('Please enter a category name'),
+          translate('Failed to load your limits'),
+          translate('Failed to update limits'),
+          translate('Failed to add category'),
+          translate('Failed to delete category')
+        ]);
+
+        setTranslatedContent({
+          title: translations[0],
+          subtitle: translations[1],
+          spendingLimits: translations[2],
+          editLimits: translations[3],
+          cancel: translations[4],
+          saveChanges: translations[5],
+          addCategory: translations[6],
+          cancelAdd: translations[7],
+          categoryName: translations[8],
+          limitPercent: translations[9],
+          add: translations[10],
+          noCategories: translations[11],
+          totalAllocation: translations[12],
+          warningExceeds: translations[13],
+          infoUnallocated: translations[14],
+          unallocated: translations[15],
+          deleteConfirm: translations[16],
+          loadingAccount: translations[17],
+          limitsUpdated: translations[18],
+          categoryAdded: translations[19],
+          categoryDeleted: translations[20],
+          enterCategoryName: translations[21],
+          failedToLoad: translations[22],
+          failedToUpdate: translations[23],
+          failedToAdd: translations[24],
+          failedToDelete: translations[25]
+        });
+      }
+    };
+
+    translateUI();
+  }, [currentLanguage, translate]);
 
   const fetchUserLimits = async () => {
     try {
@@ -39,7 +168,7 @@ export default function MyAccount() {
       }
     } catch (error) {
       console.error('Failed to fetch user limits:', error);
-      showMessage('error', 'Failed to load your limits');
+      showMessage('error', translatedContent.failedToLoad);
     } finally {
       setLoading(false);
     }
@@ -78,11 +207,11 @@ export default function MyAccount() {
       if (response.data.msg) {
         setLimits(editedLimits);
         setEditMode(false);
-        showMessage('success', 'Limits updated successfully!');
+        showMessage('success', translatedContent.limitsUpdated);
       }
     } catch (error) {
       console.error('Failed to update limits:', error);
-      showMessage('error', error.response?.data?.error || 'Failed to update limits');
+      showMessage('error', error.response?.data?.error || translatedContent.failedToUpdate);
     }
   };
 
@@ -90,7 +219,7 @@ export default function MyAccount() {
     e.preventDefault();
     
     if (!newCategoryName.trim()) {
-      showMessage('error', 'Please enter a category name');
+      showMessage('error', translatedContent.enterCategoryName);
       return;
     }
 
@@ -105,19 +234,20 @@ export default function MyAccount() {
       if (response.data.msg) {
         setLimits(response.data.all_limits);
         setEditedLimits(response.data.all_limits);
+        const categoryName = newCategoryName;
         setNewCategoryName('');
         setNewCategoryLimit(5);
         setShowAddCategory(false);
-        showMessage('success', `Category "${newCategoryName}" added successfully!`);
+        showMessage('success', `${translatedContent.addCategory} "${categoryName}" ${translatedContent.categoryAdded}`);
       }
     } catch (error) {
       console.error('Failed to add category:', error);
-      showMessage('error', error.response?.data?.error || 'Failed to add category');
+      showMessage('error', error.response?.data?.error || translatedContent.failedToAdd);
     }
   };
 
   const handleDeleteCategory = async (categoryName) => {
-    if (!confirm(`Are you sure you want to delete the category "${categoryName}"?`)) {
+    if (!confirm(`${translatedContent.deleteConfirm} "${categoryName}"?`)) {
       return;
     }
 
@@ -131,11 +261,11 @@ export default function MyAccount() {
       if (response.data.msg) {
         setLimits(response.data.all_limits);
         setEditedLimits(response.data.all_limits);
-        showMessage('success', `Category "${categoryName}" deleted successfully!`);
+        showMessage('success', `${translatedContent.addCategory} "${categoryName}" ${translatedContent.categoryDeleted}`);
       }
     } catch (error) {
       console.error('Failed to delete category:', error);
-      showMessage('error', error.response?.data?.error || 'Failed to delete category');
+      showMessage('error', error.response?.data?.error || translatedContent.failedToDelete);
     }
   };
 
@@ -147,7 +277,7 @@ export default function MyAccount() {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner}></div>
-        <p>Loading your account...</p>
+        <p>{translatedContent.loadingAccount}</p>
       </div>
     );
   }
@@ -155,15 +285,17 @@ export default function MyAccount() {
   return (
     <>
       <Head>
-        <title>My Account - FinWise</title>
+        <title>{translatedContent.title} - FinWise</title>
       </Head>
       <div className={styles.pageContainer}>
         <Navbar currentPage="/myAccount" />
         
         <main className={styles.mainContent}>
+          <LanguageSelector />
+          
           <div className={styles.accountHeader}>
-            <h1>My Account</h1>
-            <p className={styles.subtitle}>Manage your spending categories and limits</p>
+            <h1>{translatedContent.title}</h1>
+            <p className={styles.subtitle}>{translatedContent.subtitle}</p>
           </div>
 
           {message.text && (
@@ -174,28 +306,28 @@ export default function MyAccount() {
 
           <div className={styles.accountCard}>
             <div className={styles.cardHeader}>
-              <h2>Spending Limits</h2>
+              <h2>{translatedContent.spendingLimits}</h2>
               <div className={styles.cardActions}>
                 {editMode && (
                   <button 
                     className={styles.addBtn}
                     onClick={() => setShowAddCategory(!showAddCategory)}
                   >
-                    {showAddCategory ? 'Cancel Add' : '+ Add Category'}
+                    {showAddCategory ? translatedContent.cancelAdd : `+ ${translatedContent.addCategory}`}
                   </button>
                 )}
                 <button 
                   className={editMode ? styles.cancelBtn : styles.editBtn}
                   onClick={handleEditToggle}
                 >
-                  {editMode ? 'Cancel' : 'Edit Limits'}
+                  {editMode ? translatedContent.cancel : translatedContent.editLimits}
                 </button>
                 {editMode && (
                   <button 
                     className={styles.saveBtn}
                     onClick={handleSaveLimits}
                   >
-                    Save Changes
+                    {translatedContent.saveChanges}
                   </button>
                 )}
               </div>
@@ -206,7 +338,7 @@ export default function MyAccount() {
                 <div className={styles.formRow}>
                   <input
                     type="text"
-                    placeholder="Category Name"
+                    placeholder={translatedContent.categoryName}
                     value={newCategoryName}
                     onChange={(e) => setNewCategoryName(e.target.value)}
                     className={styles.input}
@@ -214,7 +346,7 @@ export default function MyAccount() {
                   />
                   <input
                     type="number"
-                    placeholder="Limit %"
+                    placeholder={translatedContent.limitPercent}
                     value={newCategoryLimit}
                     onChange={(e) => setNewCategoryLimit(parseFloat(e.target.value) || 0)}
                     className={styles.input}
@@ -223,7 +355,7 @@ export default function MyAccount() {
                     step="0.1"
                   />
                   <button type="submit" className={styles.submitBtn}>
-                    Add
+                    {translatedContent.add}
                   </button>
                 </div>
               </form>
@@ -231,7 +363,7 @@ export default function MyAccount() {
 
             <div className={styles.limitsContainer}>
               {Object.keys(limits).length === 0 ? (
-                <p className={styles.noData}>No spending categories yet. Add your first category!</p>
+                <p className={styles.noData}>{translatedContent.noCategories}</p>
               ) : (
                 <>
                   <div className={styles.limitsList}>
@@ -260,7 +392,7 @@ export default function MyAccount() {
                           <button
                             className={styles.deleteBtn}
                             onClick={() => handleDeleteCategory(category)}
-                            title="Delete category"
+                            title={translatedContent.deleteConfirm}
                           >
                             ✕
                           </button>
@@ -280,7 +412,7 @@ export default function MyAccount() {
 
                   <div className={styles.totalSection}>
                     <div className={styles.totalRow}>
-                      <span className={styles.totalLabel}>Total Allocation:</span>
+                      <span className={styles.totalLabel}>{translatedContent.totalAllocation}</span>
                       <span className={`${styles.totalValue} ${
                         getTotalPercentage() > 100 ? styles.overLimit : ''
                       }`}>
@@ -289,12 +421,12 @@ export default function MyAccount() {
                     </div>
                     {getTotalPercentage() > 100 && (
                       <p className={styles.warningText}>
-                        ⚠️ Total exceeds 100%. Consider adjusting your limits.
+                        {translatedContent.warningExceeds}
                       </p>
                     )}
                     {getTotalPercentage() < 100 && (
                       <p className={styles.infoText}>
-                        💡 You have {(100 - getTotalPercentage()).toFixed(1)}% unallocated.
+                        {translatedContent.infoUnallocated} {(100 - getTotalPercentage()).toFixed(1)}% {translatedContent.unallocated}
                       </p>
                     )}
                   </div>

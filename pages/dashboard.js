@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import Head from 'next/head';
 import Navbar from '@/components/Navbar';
 import GamifiedPieChart from '@/components/GamifiedPieChart';
@@ -14,6 +15,10 @@ import styles from '@/styles/Dashboard.module.css';
 
 export default function Dashboard() {
   const { user, signout } = useAuth();
+  const content = useTranslatedContent({
+    title: 'Dashboard - Financial Homie',
+    loading: 'Loading your dashboard...'
+  });
   const router = useRouter();
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpense, setTotalExpense] = useState(0);
@@ -99,7 +104,7 @@ export default function Dashboard() {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.loader}></div>
-        <p>Loading your dashboard...</p>
+        <p>{content.loading}</p>
       </div>
     );
   }
@@ -107,7 +112,7 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Dashboard - Financial Homie</title>
+        <title>{content.title}</title>
         <meta name="description" content="Your financial dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

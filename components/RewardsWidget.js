@@ -45,12 +45,21 @@ export default function RewardsWidget({ refreshTrigger }) {
           setPointsGained(gained);
         }
         
-        // Check for NEW streak bonuses using localStorage to prevent duplicates
-        if (data.has_new_bonuses && data.streak_bonuses && data.bonus_id) {
+        // Check for NEW bonuses using localStorage to prevent duplicates
+        console.log('Bonus check:', {
+          has_new_bonuses: data.has_new_bonuses,
+          streak_bonuses: data.streak_bonuses,
+          bonus_id: data.bonus_id
+        });
+        
+        if (data.has_new_bonuses && data.streak_bonuses && data.streak_bonuses.length > 0 && data.bonus_id) {
           const shownBonuses = JSON.parse(localStorage.getItem('shownBonuses') || '[]');
+          console.log('Shown bonuses:', shownBonuses);
+          console.log('Current bonus_id:', data.bonus_id);
           
           // Only show if this bonus_id hasn't been shown before
           if (!shownBonuses.includes(data.bonus_id)) {
+            console.log('🎉 Showing celebration!');
             // Calculate total bonus points
             const totalBonusPoints = data.streak_bonuses.reduce((sum, bonus) => sum + bonus.points, 0);
             setPointsGained(totalBonusPoints);
@@ -67,7 +76,11 @@ export default function RewardsWidget({ refreshTrigger }) {
               setShowCelebration(false);
               setPointsGained(0);
             }, 5000);
+          } else {
+            console.log('Bonus already shown');
           }
+        } else {
+          console.log('No new bonuses to show');
         }
         
         previousPointsRef.current = newPoints;

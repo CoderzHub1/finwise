@@ -1,10 +1,22 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslatedContent } from '@/hooks/useTranslatedContent';
 import styles from '@/styles/Forms.module.css';
 
 export default function IncomeForm({ onIncomeAdded }) {
   const { user } = useAuth();
+  const content = useTranslatedContent({
+    title: '↑ Add Income',
+    amountLabel: 'Amount ($)',
+    amountPlaceholder: 'Enter amount',
+    sourceLabel: 'Source',
+    sourcePlaceholder: 'e.g., Salary, Freelance, Investment',
+    submitButton: 'Add Income',
+    loginRequired: 'Please login first',
+    successMessage: 'Income added successfully!',
+    failedMessage: 'Failed to add income'
+  });
   const [formData, setFormData] = useState({
     amount: '',
     source: ''
@@ -23,7 +35,7 @@ export default function IncomeForm({ onIncomeAdded }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setMessage({ text: 'Please login first', type: 'error' });
+      setMessage({ text: content.loginRequired, type: 'error' });
       return;
     }
 
@@ -39,17 +51,17 @@ export default function IncomeForm({ onIncomeAdded }) {
       });
 
       if (response.data.msg) {
-        setMessage({ text: response.data.msg, type: 'success' });
+        setMessage({ text: content.successMessage, type: 'success' });
         setFormData({ amount: '', source: '' });
         if (onIncomeAdded) {
           onIncomeAdded(parseFloat(formData.amount));
         }
       } else {
-        setMessage({ text: response.data.error || 'Failed to add income', type: 'error' });
+        setMessage({ text: response.data.error || content.failedMessage, type: 'error' });
       }
     } catch (error) {
       setMessage({ 
-        text: error.response?.data?.error || 'Failed to add income', 
+        text: error.response?.data?.error || content.failedMessage, 
         type: 'error' 
       });
     } finally {
@@ -59,7 +71,7 @@ export default function IncomeForm({ onIncomeAdded }) {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.formTitle}>↑ Add Income</h2>
+      <h2 className={styles.formTitle}>{content.title}</h2>
       
       {message.text && (
         <div className={`${styles.message} ${styles[message.type]}`}>
@@ -69,7 +81,7 @@ export default function IncomeForm({ onIncomeAdded }) {
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.formGroup}>
-          <label htmlFor="amount">Amount ($)</label>
+          <label htmlFor="amount">{content.amountLabel}</label>
           <input
             id="amount"
             name="amount"
@@ -79,13 +91,13 @@ export default function IncomeForm({ onIncomeAdded }) {
             value={formData.amount}
             onChange={handleChange}
             required
-            placeholder="Enter amount"
+            placeholder={content.amountPlaceholder}
             className={styles.input}
           />
         </div>
 
         <div className={styles.formGroup}>
-          <label htmlFor="source">Source</label>
+          <label htmlFor="source">{content.sourceLabel}</label>
           <input
             id="source"
             name="source"
@@ -93,7 +105,7 @@ export default function IncomeForm({ onIncomeAdded }) {
             value={formData.source}
             onChange={handleChange}
             required
-            placeholder="e.g., Salary, Freelance, Investment"
+            placeholder={content.sourcePlaceholder}
             className={styles.input}
           />
         </div>
@@ -103,7 +115,7 @@ export default function IncomeForm({ onIncomeAdded }) {
           disabled={loading}
           className={`${styles.submitBtn} ${styles.incomeBtn}`}
         >
-          {loading ? 'Adding...' : '+ Add Income'}
+          {loading ? 'Adding...' : content.submitButton}
         </button>
       </form>
     </div>
