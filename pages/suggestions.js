@@ -12,19 +12,41 @@ export default function Suggestions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
+  const [hasTransactions, setHasTransactions] = useState(false);
 
   useEffect(() => {
     if (!user) {
       router.push('/login');
     } else {
-      fetchSuggestions();
+      checkTransactions();
     }
   }, [user]);
 
-  const fetchSuggestions = async () => {
+  const checkTransactions = async () => {
     setLoading(true);
     setError(null);
     
+    try {
+      const response = await axios.post('http://localhost:5000/get-user-data', {
+        username: user.username,
+        password: user.password
+      });
+
+      if (Array.isArray(response.data) && response.data.length > 0) {
+        setHasTransactions(true);
+        fetchSuggestions();
+      } else {
+        setHasTransactions(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Failed to check transactions:', error);
+      setError('Failed to load data. Please try again later.');
+      setLoading(false);
+    }
+  };
+
+  const fetchSuggestions = async () => {
     try {
       const response = await axios.post('http://localhost:5000/gemini-suggestions', {
         username: user.username,
@@ -81,8 +103,19 @@ export default function Suggestions() {
               <div className={styles.errorIcon}>⚠️</div>
               <h2 className={styles.errorTitle}>Oops!</h2>
               <p className={styles.errorMessage}>{error}</p>
-              <button onClick={fetchSuggestions} className={styles.retryBtn}>
+              <button onClick={checkTransactions} className={styles.retryBtn}>
                 Try Again
+              </button>
+            </section>
+          ) : !hasTransactions ? (
+            <section className={styles.noTransactionsSection}>
+              <div className={styles.emptyStateIcon}>📊</div>
+              <h2 className={styles.emptyStateTitle}>No Transactions Yet</h2>
+              <p className={styles.emptyStateMessage}>
+                Add your first transaction to get personalized AI-powered financial suggestions!
+              </p>
+              <button onClick={navigateToDashboard} className={styles.dashboardBtn}>
+                Go to Dashboard
               </button>
             </section>
           ) : suggestions ? (
@@ -112,7 +145,7 @@ export default function Suggestions() {
               </section>
 
               <section className={styles.refreshSection}>
-                <button onClick={fetchSuggestions} className={styles.refreshBtn}>
+                <button onClick={checkTransactions} className={styles.refreshBtn}>
                   <span className={styles.refreshIcon}>🔄</span>
                   Refresh Suggestions
                 </button>

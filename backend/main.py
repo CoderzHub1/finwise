@@ -517,10 +517,10 @@ def add_user():
             "user_interest": user_interest,
             "limit": category_limits,
             "reward_points": 0,
-            "last_weekly_check": None,
-            "last_monthly_check": None,
+            "last_weekly_check": "",
+            "last_monthly_check": "",
             "transaction_count": 0,
-            "last_bonus_id": None,
+            "last_bonus_id": "",
             "achievements": [],
             "achievement_progress": {
                 "streak_star_weeks": 0,
