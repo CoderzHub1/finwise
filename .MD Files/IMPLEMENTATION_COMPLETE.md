@@ -112,10 +112,10 @@ Documentation/
 **Test Scenario:**
 - User 1 (testuser1) sends friend request to User 2 (testuser2)
 - User 2 approves the request
-- User 1 creates ₹1000 expense split with User 2
-- System calculates ₹500 per person
-- User 1 sees: "testuser2 owes ₹500"
-- User 2 sees: "You owe testuser1 ₹500"
+- User 1 creates $1000 expense split with User 2
+- System calculates $500 per person
+- User 1 sees: "testuser2 owes $500"
+- User 2 sees: "You owe testuser1 $500"
 - User 1 settles the expense
 - Friendship removed successfully
 
@@ -199,15 +199,15 @@ Step 2: Bob approves request
    → Both are now friends
    
 Step 3: Alice creates expense
-   Amount: ₹1500
+   Amount: $1500
    Description: "Dinner at Italian restaurant"
    Split with: Bob, Charlie
-   → Each person: ₹500
+   → Each person: $500
    
 Step 4: View balances
-   Alice sees: "Bob owes ₹500, Charlie owes ₹500"
-   Bob sees: "You owe Alice ₹500"
-   Charlie sees: "You owe Alice ₹500"
+   Alice sees: "Bob owes $500, Charlie owes $500"
+   Bob sees: "You owe Alice $500"
+   Charlie sees: "You owe Alice $500"
    
 Step 5: After payment
    Alice marks expense as settled

@@ -51,7 +51,7 @@ The Expense Splitter feature allows users to add friends and split expenses with
 - **Body**: `{ username, password, amount, description, split_with[] }`
 - **Description**: Creates a new expense split among friends
 - **Calculation**: Amount is divided equally among all participants (creator + selected friends)
-- **Example**: ₹1000 split among 4 people = ₹250 per person
+- **Example**: $1000 split among 4 people = $250 per person
 
 **Get Split Expenses**
 - **Endpoint**: `POST /get-split-expenses`
@@ -154,11 +154,11 @@ The page has two main tabs:
 
 2. **Creating Split Expense**:
    ```
-   User A → Creates expense of ₹1000
+   User A → Creates expense of $1000
    User A → Selects User B and User C to split
-   System → Calculates ₹333.33 per person (3 total)
-   User B & C → See they owe ₹333.33 to User A
-   User A → Sees ₹666.66 owed (from 2 friends)
+   System → Calculates $333.33 per person (3 total)
+   User B & C → See they owe $333.33 to User A
+   User A → Sees $666.66 owed (from 2 friends)
    ```
 
 3. **Settling Expense**:

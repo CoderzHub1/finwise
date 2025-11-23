@@ -235,7 +235,7 @@ export default function SplitExpenses() {
       const data = await response.json();
       
       if (response.ok) {
-        setExpenseMessage(`✅ Expense created! Each person owes ₹${data.amount_per_person}`);
+        setExpenseMessage(`✅ Expense created! Each person owes $${data.amount_per_person}`);
         setNewExpense({ amount: '', description: '', split_with: [] });
         setShowCreateExpense(false);
         fetchExpenses();
@@ -430,7 +430,7 @@ export default function SplitExpenses() {
                       {Object.entries(balanceSummary.you_owe).map(([friend, amount]) => (
                         <div key={friend} className={styles.balanceItem}>
                           <span>{friend}</span>
-                          <span className={styles.amountOwed}>₹{amount.toFixed(2)}</span>
+                          <span className={styles.amountOwed}>${amount.toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
@@ -445,7 +445,7 @@ export default function SplitExpenses() {
                       {Object.entries(balanceSummary.owed_to_you).map(([friend, amount]) => (
                         <div key={friend} className={styles.balanceItem}>
                           <span>{friend}</span>
-                          <span className={styles.amountOwedToYou}>₹{amount.toFixed(2)}</span>
+                          <span className={styles.amountOwedToYou}>${amount.toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
@@ -472,7 +472,7 @@ export default function SplitExpenses() {
                   <input
                     type="number"
                     step="0.01"
-                    placeholder="Amount (₹)"
+                    placeholder="Amount ($)"
                     value={newExpense.amount}
                     onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
                     className={styles.input}
@@ -503,7 +503,7 @@ export default function SplitExpenses() {
                   {newExpense.split_with.length > 0 && newExpense.amount > 0 && (
                     <div className={styles.splitPreview}>
                       <p>Total People: {newExpense.split_with.length + 1} (You + {newExpense.split_with.length} friends)</p>
-                      <p>Each person pays: ₹{(parseFloat(newExpense.amount) / (newExpense.split_with.length + 1)).toFixed(2)}</p>
+                      <p>Each person pays: ${(parseFloat(newExpense.amount) / (newExpense.split_with.length + 1)).toFixed(2)}</p>
                     </div>
                   )}
                   
@@ -525,12 +525,12 @@ export default function SplitExpenses() {
                     <div key={expense.expense_id} className={`${styles.expenseItem} ${expense.settled ? styles.settledExpense : ''}`}>
                       <div className={styles.expenseHeader}>
                         <h3>{expense.description || 'Expense'}</h3>
-                        <span className={styles.expenseAmount}>₹{expense.amount.toFixed(2)}</span>
+                        <span className={styles.expenseAmount}>${expense.amount.toFixed(2)}</span>
                       </div>
                       <div className={styles.expenseDetails}>
                         <p>Date: {expense.dateCreated}</p>
                         <p>Split with: {expense.split_with.join(', ')}</p>
-                        <p>Each person: ₹{expense.amount_per_person.toFixed(2)}</p>
+                        <p>Each person: ${expense.amount_per_person.toFixed(2)}</p>
                         {expense.settled && (
                           <span className={styles.settledBadge}>✓ Settled</span>
                         )}
@@ -560,12 +560,12 @@ export default function SplitExpenses() {
                     <div key={expense.expense_id} className={`${styles.expenseItem} ${expense.settled ? styles.settledExpense : ''}`}>
                       <div className={styles.expenseHeader}>
                         <h3>{expense.description || 'Expense'}</h3>
-                        <span className={styles.expenseAmount}>₹{expense.amount.toFixed(2)}</span>
+                        <span className={styles.expenseAmount}>${expense.amount.toFixed(2)}</span>
                       </div>
                       <div className={styles.expenseDetails}>
                         <p>Created by: {expense.created_by}</p>
                         <p>Date: {expense.dateCreated}</p>
-                        <p>You owe: ₹{expense.balances[user.username].toFixed(2)}</p>
+                        <p>You owe: ${expense.balances[user.username].toFixed(2)}</p>
                         {expense.settled && (
                           <span className={styles.settledBadge}>✓ Settled</span>
                         )}

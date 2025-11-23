@@ -124,13 +124,13 @@ Three collections used:
 1. Alice adds Bob and Charlie as friends
 2. They approve the requests
 3. Alice creates expense:
-   - Amount: ₹1500
+   - Amount: $1500
    - Description: "Dinner at restaurant"
    - Split with: Bob, Charlie
-4. System calculates: ₹500 per person (3 people total)
-5. Bob sees: "You owe Alice ₹500"
-6. Charlie sees: "You owe Alice ₹500"
-7. Alice sees: "Bob owes ₹500, Charlie owes ₹500"
+4. System calculates: $500 per person (3 people total)
+5. Bob sees: "You owe Alice $500"
+6. Charlie sees: "You owe Alice $500"
+7. Alice sees: "Bob owes $500, Charlie owes $500"
 8. After payment, Alice marks as settled
 
 ## 🧪 Testing Checklist

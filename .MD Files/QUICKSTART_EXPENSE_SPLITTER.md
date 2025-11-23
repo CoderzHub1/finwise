@@ -44,17 +44,17 @@ Use the existing signup page or API to create two test accounts:
    - Amount: `1200`
    - Description: `Lunch at cafe`
    - Check ☑ `bob`
-5. See preview: "Each person pays: ₹600"
+5. See preview: "Each person pays: $600"
 6. Click **"Create Expense"**
 
 ### Step 5: View Balances
 **Alice's View:**
-- Balance Summary shows: "Owed to You: bob ₹600"
-- Created expense shows Bob owes ₹600
+- Balance Summary shows: "Owed to You: bob $600"
+- Created expense shows Bob owes $600
 
 **Bob's View:**
-- Balance Summary shows: "You Owe: alice ₹600"
-- Involved expense shows he owes Alice ₹600
+- Balance Summary shows: "You Owe: alice $600"
+- Involved expense shows he owes Alice $600
 
 ### Step 6: Settle Expense
 1. Login as `alice` (expense creator)
@@ -86,28 +86,28 @@ Use the existing signup page or API to create two test accounts:
 │ ┌──────────┬──────────┐             │
 │ │ You Owe  │ Owed to  │             │
 │ │ alice    │ You      │             │
-│ │ ₹600     │ bob ₹500 │             │
+│ │ $600     │ bob $500 │             │
 │ └──────────┴──────────┘             │
 ├─────────────────────────────────────┤
 │ [+ Create Split Expense]            │
 ├─────────────────────────────────────┤
 │ Expenses You Created (2)            │
-│ • Lunch - ₹1200 [Mark as Settled]   │
+│ • Lunch - $1200 [Mark as Settled]   │
 ├─────────────────────────────────────┤
 │ Expenses You're Part Of (1)         │
-│ • Dinner - ₹900 (You owe ₹300)      │
+│ • Dinner - $900 (You owe $300)      │
 └─────────────────────────────────────┘
 ```
 
 ## 📱 Use Cases
 
 ### Case 1: Group Dinner
-**Scenario:** 3 friends go to dinner, Alice pays ₹3000
+**Scenario:** 3 friends go to dinner, Alice pays $3000
 
 **Steps:**
-1. Alice creates expense: ₹3000, split with Bob & Charlie
-2. System calculates: ₹1000 each
-3. Bob & Charlie each owe Alice ₹1000
+1. Alice creates expense: $3000, split with Bob & Charlie
+2. System calculates: $1000 each
+3. Bob & Charlie each owe Alice $1000
 4. After payment, Alice settles the expense
 
 ### Case 2: Roommate Expenses
