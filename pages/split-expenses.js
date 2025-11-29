@@ -51,7 +51,7 @@ export default function SplitExpenses() {
 
   const fetchFriends = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get-friends', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-friends`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function SplitExpenses() {
 
   const fetchFriendRequests = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get-friend-requests', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-friend-requests`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -91,7 +91,7 @@ export default function SplitExpenses() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get-split-expenses', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-split-expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -123,7 +123,7 @@ export default function SplitExpenses() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/send-friend-request', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/send-friend-request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -148,7 +148,7 @@ export default function SplitExpenses() {
 
   const respondToRequest = async (senderUsername, action) => {
     try {
-      const response = await fetch('http://localhost:5000/respond-friend-request', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/respond-friend-request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -176,7 +176,7 @@ export default function SplitExpenses() {
     if (!confirm(`Remove ${friendUsername} from your friends?`)) return;
 
     try {
-      const response = await fetch('http://localhost:5000/remove-friend', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/remove-friend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -221,7 +221,7 @@ export default function SplitExpenses() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/create-split-expense', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/create-split-expense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -251,7 +251,7 @@ export default function SplitExpenses() {
     if (!confirm('Mark this expense as settled?')) return;
 
     try {
-      const response = await fetch('http://localhost:5000/settle-expense', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/settle-expense`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

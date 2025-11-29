@@ -56,7 +56,7 @@ export default function TransactionHistory({ refreshTrigger }) {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/get-user-data', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user-data`, {
         username: user.username,
         password: user.password
       });

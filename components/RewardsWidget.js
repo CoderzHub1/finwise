@@ -29,7 +29,7 @@ export default function RewardsWidget({ refreshTrigger }) {
     if (!user) return;
     
     try {
-      const response = await fetch('http://localhost:5000/get-rewards', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-rewards`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

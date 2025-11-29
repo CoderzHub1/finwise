@@ -27,7 +27,7 @@ export default function Suggestions() {
     setError(null);
     
     try {
-      const response = await axios.post('http://localhost:5000/get-user-data', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user-data`, {
         username: user.username,
         password: user.password
       });
@@ -48,7 +48,7 @@ export default function Suggestions() {
 
   const fetchSuggestions = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/gemini-suggestions', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/gemini-suggestions`, {
         username: user.username,
         password: user.password
       });

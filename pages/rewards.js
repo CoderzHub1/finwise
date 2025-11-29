@@ -28,7 +28,7 @@ export default function Rewards() {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/get-rewards', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-rewards`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function Rewards() {
 
   const fetchRankAndAchievements = async () => {
     try {
-      const response = await fetch('http://localhost:5000/get-rank-and-achievements', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-rank-and-achievements`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

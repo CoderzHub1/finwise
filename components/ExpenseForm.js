@@ -36,7 +36,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
 
   const fetchUserCategories = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/get-user-limits', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user-limits`, {
         username: user.username,
         password: user.password
       });
@@ -86,7 +86,7 @@ export default function ExpenseForm({ onExpenseAdded }) {
     setMessage({ text: '', type: '' });
 
     try {
-      const response = await axios.post('http://localhost:5000/add-transaction', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-transaction`, {
         username: user.username,
         password: user.password,
         amount: parseFloat(formData.amount),

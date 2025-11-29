@@ -43,7 +43,7 @@ export default function IncomeForm({ onIncomeAdded }) {
     setMessage({ text: '', type: '' });
 
     try {
-      const response = await axios.post('http://localhost:5000/add-income', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-income`, {
         username: user.username,
         password: user.password,
         amount: parseFloat(formData.amount),

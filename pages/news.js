@@ -58,7 +58,7 @@ export default function News() {
     
     try {
       const query = 'finance tips OR personal finance OR money management OR budgeting OR saving money';
-      const response = await axios.get('http://localhost:5000/finance-news', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/finance-news`, {
         params: {
           query: query,
           page_size: 20,

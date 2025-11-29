@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:5000/add-user', userData);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-user`, userData);
       if (response.data.msg) {
         return { success: true, message: response.data.msg };
       }
@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
 
   const signin = async (identifier, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/signin', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/signin`, {
         identifier,
         password
       });

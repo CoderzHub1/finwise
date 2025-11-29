@@ -32,7 +32,7 @@ export default function AnalyticsTracker() {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:5000/get-analytics', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-analytics`, {
         username: user.username,
         password: user.password,
         time_frame: timeFrame
@@ -49,7 +49,7 @@ export default function AnalyticsTracker() {
 
   const fetchUserLimits = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/get-user-limits', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user-limits`, {
         username: user.username,
         password: user.password
       });

@@ -50,8 +50,8 @@ export default function LoanForm({ onLoanAdded }) {
 
     try {
       const endpoint = loanType === 'taken' 
-        ? 'http://localhost:5000/add-loanTaken'
-        : 'http://localhost:5000/add-loanRepayment';
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/add-loanTaken`
+        : `${process.env.NEXT_PUBLIC_BACKEND_URL}/add-loanRepayment`;
 
       const payload = {
         username: user.username,

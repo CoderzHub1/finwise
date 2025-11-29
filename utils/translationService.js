@@ -37,7 +37,7 @@ export const SUPPORTED_LANGUAGES = [
 ];
 
 // Backend API URL
-const API_URL = 'http://localhost:5000';
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 // In-memory cache for translations to reduce API calls
 const translationCache = new Map();

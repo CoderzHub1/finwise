@@ -81,7 +81,7 @@ const FinanceCommunityPlatform = () => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/get-post');
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-post`);
         
         // Transform backend posts to match frontend format
         const transformedPosts = response.data.map(post => {
@@ -154,7 +154,7 @@ const FinanceCommunityPlatform = () => {
 
     try {
       // Send interaction to backend with positive weight for likes
-      await axios.post('http://localhost:5000/handle-interaction', {
+      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle-interaction`, {
         username: user.username,
         post_id: postId,
         weight: 1.0
@@ -179,7 +179,7 @@ const FinanceCommunityPlatform = () => {
     if (commentText[postId]?.trim()) {
       try {
         // Send interaction to backend with higher weight for comments
-        await axios.post('http://localhost:5000/handle-interaction', {
+        await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/handle-interaction`, {
           username: user.username,
           post_id: postId,
           weight: 2.0
@@ -212,14 +212,14 @@ const FinanceCommunityPlatform = () => {
       // Convert actual newlines to \n string for single-line transmission
       const singleLineContent = newPostContent.replace(/\n/g, '\\n');
       
-      const response = await axios.post('http://localhost:5000/add-post', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-post`, {
         username: user.username,
         password: user.password,
         content: singleLineContent
       });
 
       // Refresh posts after creating
-      const postsResponse = await axios.get('http://localhost:5000/get-post');
+      const postsResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-post`);
       const transformedPosts = postsResponse.data.map(post => {
         const initials = post.username
           .split(' ')

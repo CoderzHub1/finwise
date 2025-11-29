@@ -157,7 +157,7 @@ export default function MyAccount() {
 
   const fetchUserLimits = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/get-user-limits', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/get-user-limits`, {
         username: user.username,
         password: user.password
       });
@@ -198,7 +198,7 @@ export default function MyAccount() {
 
   const handleSaveLimits = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/update-user-limits', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/update-user-limits`, {
         username: user.username,
         password: user.password,
         limits: editedLimits
@@ -224,7 +224,7 @@ export default function MyAccount() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/add-category', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/add-category`, {
         username: user.username,
         password: user.password,
         category_name: newCategoryName.trim(),
@@ -252,7 +252,7 @@ export default function MyAccount() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/delete-category', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/delete-category`, {
         username: user.username,
         password: user.password,
         category_name: categoryName
