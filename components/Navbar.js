@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslatedContent } from '@/hooks/useTranslatedContent';
-import LanguageSelector from '@/components/LanguageSelector';
+// import LanguageSelector from '@/components/LanguageSelector';
 import styles from '@/styles/Navbar.module.css';
 
 export default function Navbar({ currentPage = '' }) {
@@ -58,7 +58,7 @@ export default function Navbar({ currentPage = '' }) {
             </button>
           ))}
         </nav>
-        <LanguageSelector />
+        {/* <LanguageSelector /> */}
         <button onClick={handleSignout} className={styles.signoutBtn}>
           {content.signOut}
         </button>

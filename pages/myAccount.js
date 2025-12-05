@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/context/AuthContext';
-import { useTranslation } from '@/context/TranslationContext';
+// import { useTranslation } from '@/context/TranslationContext';
 import Head from 'next/head';
 import Navbar from '@/components/Navbar';
-import LanguageSelector from '@/components/LanguageSelector';
+// import LanguageSelector from '@/components/LanguageSelector';
 import axios from 'axios';
 import styles from '@/styles/MyAccount.module.css';
 
 export default function MyAccount() {
   const { user, signout } = useAuth();
-  const { translate, currentLanguage } = useTranslation();
+  // const { translate, currentLanguage } = useTranslation();
   const router = useRouter();
   const [limits, setLimits] = useState({});
   const [loading, setLoading] = useState(true);
@@ -58,6 +58,7 @@ export default function MyAccount() {
   }, [user]);
 
   // Translate UI content when language changes
+  /*
   useEffect(() => {
     const translateUI = async () => {
       if (currentLanguage === 'en') {
@@ -154,6 +155,7 @@ export default function MyAccount() {
 
     translateUI();
   }, [currentLanguage, translate]);
+  */
 
   const fetchUserLimits = async () => {
     try {
@@ -291,7 +293,7 @@ export default function MyAccount() {
         <Navbar currentPage="/myAccount" />
         
         <main className={styles.mainContent}>
-          <LanguageSelector />
+          {/* <LanguageSelector /> */}
           
           <div className={styles.accountHeader}>
             <h1>{translatedContent.title}</h1>

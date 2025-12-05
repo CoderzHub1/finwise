@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from '@/context/TranslationContext';
+// import { useTranslation } from '@/context/TranslationContext';
 
 /**
  * Custom hook for translating static text content in components
@@ -21,6 +21,7 @@ import { useTranslation } from '@/context/TranslationContext';
  * <button>{content.button}</button>
  */
 export function useTranslatedContent(defaultContent) {
+  /*
   const { translate, currentLanguage } = useTranslation();
   const [translatedContent, setTranslatedContent] = useState(defaultContent);
 
@@ -55,6 +56,8 @@ export function useTranslatedContent(defaultContent) {
   }, [currentLanguage, translate]);
 
   return translatedContent;
+  */
+  return defaultContent;
 }
 
 /**
@@ -70,6 +73,7 @@ export function useTranslatedContent(defaultContent) {
  * return <h1>{welcomeMessage}</h1>;
  */
 export function useTranslatedText(text, sourceLang = 'en') {
+  /*
   const { translate, currentLanguage } = useTranslation();
   const [translatedText, setTranslatedText] = useState(text);
 
@@ -93,4 +97,6 @@ export function useTranslatedText(text, sourceLang = 'en') {
   }, [text, currentLanguage, translate, sourceLang]);
 
   return translatedText;
+  */
+  return text;
 }
